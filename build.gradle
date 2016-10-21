@@ -1,0 +1,37 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.novoda:bintray-release:0.3.4'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    compileSdkVersion = 25
+    buildToolsVersion = '25'
+    minSdkVersion = 9
+    targetSdkVersion = 25
+
+    supportLibraryVersion = '25.0.0'
+
+    bintrayUserOrg = 'hendraanggrian'
+    bintrayGroupId = 'io.github.hendraanggrian'
+    bintrayArtifactId = 'imagepicker'
+    bintrayPublishVersion = '0.1.0'
+    bintrayDesc = 'Pick images from camera and gallery without FileProvider.'
+    bintrayWebsite = 'https://github.com/hendraanggrian/imagepicker'
+}
+
+//$ ./gradlew bintrayUpload -PbintrayUser=hendraanggrian -PbintrayKey= -PdryRun=false
