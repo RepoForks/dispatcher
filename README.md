@@ -51,7 +51,7 @@ And `FileProvider` with this snippet.
 Usage
 -----
 
-Take picture from camera:
+Take picture from camera in `Activity` or `Fragment`:
 
 ```java
 ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultListener() {
@@ -62,7 +62,7 @@ ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultList
 });
 ```
 
-Pick single or multiple images from gallery:
+Pick single or multiple images from gallery in `Activity` or `Fragment`:
 
 ```java
 ImagePicker.pickGallery(MainActivity.this, new ImagePicker.OnGalleryResultListener() {
@@ -78,6 +78,16 @@ ImagePicker.pickGalleryMultiple(MainActivity.this, new ImagePicker.OnGalleryResu
         // do what you want with uri
     }
 });
+```
+
+In both cases, override `onActivityResult()` in `Activity` or `Fragment`:
+
+```java
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    ImagePicker.onActivityResult(requestCode, resultCode, data);
+}
 ```
 
 It is worth mentioning that calling camera or gallery intent will crash if device do not have camera hardware or apps do not have camera and external storage permissions.
