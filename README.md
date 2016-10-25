@@ -19,25 +19,14 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:imagepicker:0.1.1'
+compile 'io.github.hendraanggrian:imagepicker:0.1.2'
 ```
 
 
 Installation
 ------------
 
-Create an xml file with any name in res/xml folder. Let's assume the name is `file_provider.xml`:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<paths>
-    <external-path
-        name="file_provider"
-        path="Android/data/com.your.package/files/Pictures"/>
-</paths>
-```
-
-In your `AndroidManifest.xml`, list certain permissions and include `file_provider.xml`:
+In your `AndroidManifest.xml`, list certain permissions and include `FileProvider`:
 
 ```xml
 <uses-permission android:name="android.permission.CAMERA"/>
@@ -46,15 +35,17 @@ In your `AndroidManifest.xml`, list certain permissions and include `file_provid
 <application ...>
     <provider
         android:name="android.support.v4.content.FileProvider"
-        android:authorities="@string/imagepicker_authorities"
+        android:authorities="com.your.package.fileprovider"
         android:exported="false"
         android:grantUriPermissions="true">
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/file_provider"/>
+            android:resource="@xml/imagepicker_resource"/>
     </provider>
 </application>
 ```
+
+Notice that you should use the name of your package + `.fileprovider` as the authorities.
 
 
 Usage

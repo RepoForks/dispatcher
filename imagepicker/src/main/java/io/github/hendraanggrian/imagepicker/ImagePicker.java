@@ -36,7 +36,7 @@ public class ImagePicker {
         if (tempFile == null) {
             Log.d(ImagePicker.class.getSimpleName(), "Temp file is null, consult to https://github.com/hendraanggrian/imagepicker for correct configuration");
         } else {
-            ((CameraPickerRequest) request).setResult(FileProvider.getUriForFile(activity, activity.getString(R.string.imagepicker_authorities), tempFile));
+            ((CameraPickerRequest) request).setResult(FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", tempFile));
             activity.startActivityForResult(createCameraIntent().putExtra(MediaStore.EXTRA_OUTPUT, ((CameraPickerRequest) request).getResult()), request.getRequestCode());
         }
     }
@@ -53,7 +53,7 @@ public class ImagePicker {
         if (tempFile == null) {
             Log.d(ImagePicker.class.getSimpleName(), "Temp file is null, consult to https://github.com/hendraanggrian/imagepicker for correct configuration");
         } else {
-            ((CameraPickerRequest) request).setResult(FileProvider.getUriForFile(fragment.getContext(), fragment.getString(R.string.imagepicker_authorities), tempFile));
+            ((CameraPickerRequest) request).setResult(FileProvider.getUriForFile(fragment.getContext(), fragment.getContext().getPackageName() + ".fileprovider", tempFile));
             fragment.startActivityForResult(createCameraIntent().putExtra(MediaStore.EXTRA_OUTPUT, ((CameraPickerRequest) request).getResult()), request.getRequestCode());
         }
     }
@@ -145,7 +145,7 @@ public class ImagePicker {
                 final Uri result = ((CameraPickerRequest) request).getResult();
                 ((CameraPickerRequest) request).getResultListener().onCameraResult(result);
             } else {
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN && data.getClipData() != null) {
                     final ClipData clipData = data.getClipData();
                     final Uri[] results = new Uri[clipData.getItemCount()];
                     for (int i = 0; i < clipData.getItemCount(); i++)
@@ -182,11 +182,11 @@ public class ImagePicker {
     @Nullable
     private static File createTempFile(@NonNull Context context) {
         try {
-            File parent = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File parent = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.imagepicker_parent));
             boolean parentCreationResult = parent.mkdirs();
             Log.d(ImagePicker.class.getSimpleName(), parentCreationResult ? "parent folder created." : "parent folder already exists.");
 
-            File file = new File(parent, context.getString(R.string.imagepicker_file));
+            File file = new File(parent, context.getString(R.string.imagepicker_child));
             boolean fileDeletionResult = file.delete();
             Log.d(ImagePicker.class.getSimpleName(), fileDeletionResult ? "temp file deleted." : "temp file doesn't exist.");
             boolean fileCreationResult = file.createNewFile();
