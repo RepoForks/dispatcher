@@ -1,5 +1,4 @@
 <resources>
     <string name="imagepicker_authorities">io.github.hendraanggrian.imagepicker.fileprovider</string>
-    <string name="imagepicker_parent">Android/data/io.github.hendraanggrian.imagepicker</string>
-    <string name="imagepicker_file">temp.jpg</string>
+    <string name="imagepicker_file">imagepicker_temp.jpg</string>
 </resources>

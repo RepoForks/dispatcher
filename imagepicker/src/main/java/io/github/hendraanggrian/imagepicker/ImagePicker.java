@@ -182,7 +182,7 @@ public class ImagePicker {
     @Nullable
     private static File createTempFile(@NonNull Context context) {
         try {
-            File parent = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.imagepicker_parent));
+            File parent = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             boolean parentCreationResult = parent.mkdirs();
             Log.d(ImagePicker.class.getSimpleName(), parentCreationResult ? "parent folder created." : "parent folder already exists.");
 
