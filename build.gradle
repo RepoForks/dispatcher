@@ -29,7 +29,7 @@ ext {
     bintrayUserOrg = 'hendraanggrian'
     bintrayGroupId = 'io.github.hendraanggrian'
     bintrayArtifactId = 'imagepicker'
-    bintrayPublishVersion = '0.1.2'
+    bintrayPublishVersion = '0.1.3'
     bintrayDesc = 'Pick images from camera and gallery the easy way.'
     bintrayWebsite = 'https://github.com/hendraanggrian/imagepicker'
 }

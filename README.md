@@ -19,7 +19,7 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:imagepicker:0.1.2'
+compile 'io.github.hendraanggrian:imagepicker:0.1.3'
 ```
 
 

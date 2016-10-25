@@ -140,7 +140,7 @@ public class ImagePicker {
      * @param data        intent result.
      */
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == request.getRequestCode() && resultCode == Activity.RESULT_OK) {
+        if (request != null && requestCode == request.getRequestCode() && resultCode == Activity.RESULT_OK) {
             if (request instanceof CameraPickerRequest) {
                 final Uri result = ((CameraPickerRequest) request).getResult();
                 ((CameraPickerRequest) request).getResultListener().onCameraResult(result);
