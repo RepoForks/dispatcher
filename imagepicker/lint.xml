@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lint>
-    <!-- caused by name "imagepicker_path" in imagepicker_resource.xml -->
-    <!-- While it is not used, it is required to put any name with this path -->
-    <issue id="UnusedResources" severity="ignore"/>
-</lint>

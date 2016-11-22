@@ -8,8 +8,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/imagepicker" />
-            <option value="$PROJECT_DIR$/imagepicker-example" />
+            <option value="$PROJECT_DIR$/picker" />
+            <option value="$PROJECT_DIR$/picker-example" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

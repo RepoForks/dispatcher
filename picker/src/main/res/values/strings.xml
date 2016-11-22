@@ -1,0 +1,4 @@
+<resources>
+    <string name="picker_parent">Android/data/io.github.hendraanggrian.picker</string>
+    <string name="picker_child">temp.jpg</string>
+</resources>
