@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import io.github.hendraanggrian.contentpicker.Picker;
+import io.github.hendraanggrian.contentpicker.ContentPicker;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Picker.dispatchCamera(MainActivity.this, new Picker.OnCameraResultListener() {
+                ContentPicker.dispatchCaptureImage(MainActivity.this, new ContentPicker.OnCaptureResultListener() {
                     @Override
-                    public void onCameraResult(@NonNull Uri uri) {
+                    public void onCaptureResult(@NonNull Uri uri) {
                         imageViewResult.setImageBitmap(null);
                         imageViewResult.setImageURI(uri);
                     }
@@ -37,9 +37,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Picker.pickGallery(MainActivity.this, new Picker.OnGalleryResultListener() {
+                ContentPicker.pickSingle(MainActivity.this, new ContentPicker.OnContentResultListener() {
                     @Override
-                    public void onGalleryResult(@NonNull Uri... results) {
+                    public void onContentResult(@NonNull Uri... results) {
                         imageViewResult.setImageURI(results[0]);
                     }
                 });
@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_gallery_multiple).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Picker.pickGalleryMultiple(MainActivity.this, new Picker.OnGalleryResultListener() {
+                ContentPicker.pickMultiple(MainActivity.this, new ContentPicker.OnContentResultListener() {
                     @Override
-                    public void onGalleryResult(@NonNull Uri... results) {
+                    public void onContentResult(@NonNull Uri... results) {
                         Toast.makeText(MainActivity.this, results.length + " images selected, last one used", Toast.LENGTH_SHORT).show();
                         imageViewResult.setImageURI(results[results.length - 1]);
                     }
@@ -63,6 +63,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Picker.onActivityResult(requestCode, resultCode, data);
+        ContentPicker.onActivityResult(requestCode, resultCode, data);
     }
 }

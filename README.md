@@ -8,7 +8,7 @@ In addition, it also picks single or multiple images from gallery.
 ```gradle
 ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultListener() {
     @Override
-    public void onCameraResult(@NonNull Uri uri) {
+    public void onCaptureResult(@NonNull Uri uri) {
         // do what you want with uri
     }
 });
@@ -56,7 +56,7 @@ Take picture from camera in `Activity` or `Fragment`:
 ```java
 ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultListener() {
     @Override
-    public void onCameraResult(@NonNull Uri uri) {
+    public void onCaptureResult(@NonNull Uri uri) {
         // do what you want with uri
     }
 });
@@ -67,14 +67,14 @@ Pick single or multiple images from gallery in `Activity` or `Fragment`:
 ```java
 ImagePicker.pickGallery(MainActivity.this, new ImagePicker.OnGalleryResultListener() {
     @Override
-    public void onGalleryResult(@NonNull Uri... results) {
+    public void onContentResult(@NonNull Uri... results) {
         // do what you want with uri
     }
 });
 
 ImagePicker.pickGalleryMultiple(MainActivity.this, new ImagePicker.OnGalleryResultListener() {
     @Override
-    public void onGalleryResult(@NonNull Uri... results) {
+    public void onContentResult(@NonNull Uri... results) {
         // do what you want with uri
     }
 });

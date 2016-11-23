@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
  */
 public final class MimeType {
 
+    @NonNull public static final String ALL = "*/*";
+
     @NonNull public static final String AUDIO_ALL = "audio/*";
     @NonNull public static final String AUDIO_MP3 = "audio/mp3";
     @NonNull public static final String AUDIO_M4A = "audio/mp4";
