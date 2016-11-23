@@ -1,4 +1,4 @@
 <resources>
-    <string name="contentpicker_parent">Android/data/io.github.hendraanggrian.picker</string>
+    <string name="contentpicker_parent">Android/data/io.github.hendraanggrian.contentpicker</string>
     <string name="contentpicker_child">temp.jpg</string>
 </resources>

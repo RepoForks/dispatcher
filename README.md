@@ -1,27 +1,25 @@
-Android ImagePicker
-===================
+Android ContentPicker
+=====================
 
 Taking picture from camera can be a lot of hard work for such a simple task thanks to `FileProvider` in newer Android version.
 This library is specifically created to do the hard work and keeps it easy on lazy developers like me.
 In addition, it also picks single or multiple images from gallery.
 
 ```gradle
-ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultListener() {
+ContentPicker.dispatchCaptureImage(MainActivity.this, new ContentPicker.OnContentResultListener() {
     @Override
-    public void onCaptureResult(@NonNull Uri uri) {
+    public void onResult(@NonNull Uri uri) {
         // do what you want with uri
     }
 });
 ```
 
-
 Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:imagepicker:0.1.3'
+compile 'io.github.hendraanggrian:contentpicker:0.2.0'
 ```
-
 
 Installation
 ------------
@@ -40,13 +38,12 @@ In your `AndroidManifest.xml`, list certain permissions and include `FileProvide
         android:grantUriPermissions="true">
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/imagepicker_resource"/>
+            android:resource="@xml/contentpicker_resource"/>
     </provider>
 </application>
 ```
 
 Notice that you should use the name of your package + `.fileprovider` as the authorities.
-
 
 Usage
 -----
@@ -54,9 +51,9 @@ Usage
 Take picture from camera in `Activity` or `Fragment`:
 
 ```java
-ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultListener() {
+ContentPicker.dispatchCamera(MainActivity.this, new ContentPicker.OnContentResultListener() {
     @Override
-    public void onCaptureResult(@NonNull Uri uri) {
+    public void onResult(@NonNull Uri uri) {
         // do what you want with uri
     }
 });
@@ -65,16 +62,16 @@ ImagePicker.dispatchCamera(MainActivity.this, new ImagePicker.OnCameraResultList
 Pick single or multiple images from gallery in `Activity` or `Fragment`:
 
 ```java
-ImagePicker.pickGallery(MainActivity.this, new ImagePicker.OnGalleryResultListener() {
+ContentPicker.pickGallery(MainActivity.this, new ContentPicker.OnContentResultListener() {
     @Override
-    public void onContentResult(@NonNull Uri... results) {
+    public void onResult(@NonNull Uri... results) {
         // do what you want with uri
     }
 });
 
-ImagePicker.pickGalleryMultiple(MainActivity.this, new ImagePicker.OnGalleryResultListener() {
+ContentPicker.pickGalleryMultiple(MainActivity.this, new ContentPicker.OnContentResultListener() {
     @Override
-    public void onContentResult(@NonNull Uri... results) {
+    public void onResult(@NonNull Uri... results) {
         // do what you want with uri
     }
 });
@@ -86,10 +83,9 @@ In both cases, override `onActivityResult()` in `Activity` or `Fragment`:
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     super.onActivityResult(requestCode, resultCode, data);
-    ImagePicker.onActivityResult(requestCode, resultCode, data);
+    ContentPicker.onActivityResult(requestCode, resultCode, data);
 }
 ```
 
 It is worth mentioning that calling camera or gallery intent will crash if device do not have camera hardware or apps do not have camera and external storage permissions.
-To avoid this issue, call `ImagePicker.isCameraAvailable(context)` and `ImagePicker.isGalleryAvailable(context)` respectively.
-For permissions, see [Android doc](https://developer.android.com/training/permissions/requesting.html) for more information or use [my permission library](https://github.com/hendraanggrian/permission).
+To avoid this issue, call `Content.isCameraAvailable(context)` and `ContentPicker.isGalleryAvailable(context)` respectively.

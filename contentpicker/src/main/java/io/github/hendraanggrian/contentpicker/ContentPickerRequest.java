@@ -18,7 +18,9 @@ final class ContentPickerRequest<Listener> {
     private final int requestCode;
     @NonNull private final Listener listener;
 
-    private ContentPickerRequest(@NonNull Listener listener) {
+    ContentPickerRequest(@NonNull Listener listener) {
+        if (random == null)
+            random = new Random();
         this.requestCode = random.nextInt(MAX_VALUE);
         this.listener = listener;
     }
@@ -30,11 +32,5 @@ final class ContentPickerRequest<Listener> {
     @NonNull
     final Listener getResultListener() {
         return listener;
-    }
-
-    static <Listener> ContentPickerRequest newInstance(@NonNull Listener listener) {
-        if (random == null)
-            random = new Random();
-        return new ContentPickerRequest<>(listener);
     }
 }

@@ -10,9 +10,9 @@ ext {
 
     BINTRAY_USER_ORG = 'hendraanggrian'
     BINTRAY_GROUP_ID = 'io.github.hendraanggrian'
-    BINTRAY_ARTIFACT_ID = 'imagepicker'
-    BINTRAY_PUBLISH_VERSION = '0.1.3'
-    BINTRAY_DESC = 'Pick images from camera and gallery the easy way.'
+    BINTRAY_ARTIFACT_ID = 'contentpicker'
+    BINTRAY_PUBLISH_VERSION = '0.2.0'
+    BINTRAY_DESC = 'Pick content from Android Intent the easy way.'
     BINTRAY_WEBSITE = 'https://github.com/hendraanggrian/imagepicker'
 }
 

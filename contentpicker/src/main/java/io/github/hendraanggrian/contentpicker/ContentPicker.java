@@ -24,6 +24,8 @@ import java.io.IOException;
  */
 public final class ContentPicker {
 
+    private static final String TAG = "ContentPicker";
+
     @NonNull private static final Intent INTENT_CAPTURE_IMAGE = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     @NonNull private static final Intent INTENT_CAPTURE_VIDEO = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
     @NonNull private static final Intent INTENT_CONTENT = new Intent(Intent.ACTION_GET_CONTENT);
@@ -44,12 +46,12 @@ public final class ContentPicker {
     }
 
     public static void pickSingle(@NonNull Activity requester, @NonNull OnContentResultListener listener, @NonNull String... mimeTypes) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         requester.startActivityForResult(createContentIntent(mimeTypes), request.getRequestCode());
     }
 
     public static void pickSingle(@NonNull Fragment requester, @NonNull OnContentResultListener listener, @NonNull String... mimeTypes) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         requester.startActivityForResult(createContentIntent(mimeTypes), request.getRequestCode());
     }
 
@@ -65,13 +67,13 @@ public final class ContentPicker {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void pickMultiple(@NonNull Activity requester, @NonNull OnContentResultListener listener, @NonNull String... mimeTypes) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         requester.startActivityForResult(createContentIntent(mimeTypes).putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true), request.getRequestCode());
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public static void pickMultiple(@NonNull Fragment requester, @NonNull OnContentResultListener listener, @NonNull String... mimeTypes) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         requester.startActivityForResult(createContentIntent(mimeTypes).putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true), request.getRequestCode());
     }
 
@@ -106,7 +108,7 @@ public final class ContentPicker {
     }
 
     public static void dispatchCaptureImage(@NonNull Activity requester, @NonNull OnCaptureResultListener listener) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         File tempFile = createTempFile(requester);
         if (tempFile == null) {
             Log.d(ContentPicker.class.getSimpleName(), "Temp file is null, consult to https://github.com/hendraanggrian/imagepicker for correct configuration");
@@ -117,7 +119,7 @@ public final class ContentPicker {
     }
 
     public static void dispatchCaptureImage(@NonNull Fragment requester, @NonNull OnCaptureResultListener listener) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         File tempFile = createTempFile(requester.getContext());
         if (tempFile == null) {
             Log.d(ContentPicker.class.getSimpleName(), "Temp file is null, consult to https://github.com/hendraanggrian/imagepicker for correct configuration");
@@ -136,29 +138,29 @@ public final class ContentPicker {
     }
 
     public static void dispatchCaptureVideo(@NonNull Activity requester, @NonNull OnCaptureResultListener listener) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         requester.startActivityForResult(INTENT_CAPTURE_VIDEO, request.getRequestCode());
     }
 
     public static void dispatchCaptureVideo(@NonNull Fragment requester, @NonNull OnCaptureResultListener listener) {
-        request = ContentPickerRequest.newInstance(listener);
+        request = new ContentPickerRequest<>(listener);
         requester.startActivityForResult(INTENT_CAPTURE_VIDEO, request.getRequestCode());
     }
 
     public interface OnCaptureResultListener {
 
         /**
-         * @param uri result of camera intent.
+         * @param result uri of capture image or video from camera apps.
          */
-        void onCaptureResult(@NonNull Uri uri);
+        void onResult(@NonNull Uri result);
     }
 
     public interface OnContentResultListener {
 
         /**
-         * @param results of gallery intent in array of uri.
+         * @param results array of uris from other apps.
          */
-        void onContentResult(@NonNull Uri... results);
+        void onResult(@NonNull Uri... results);
     }
 
     /**
@@ -176,15 +178,16 @@ public final class ContentPicker {
                     final Uri[] results = new Uri[clipData.getItemCount()];
                     for (int i = 0; i < clipData.getItemCount(); i++)
                         results[i] = clipData.getItemAt(i).getUri();
-                    ((OnContentResultListener) request.getResultListener()).onContentResult(results);
+                    ((OnContentResultListener) request.getResultListener()).onResult(results);
                 } else {
                     final Uri result = data.getData();
-                    ((OnContentResultListener) request.getResultListener()).onContentResult(result);
+                    ((OnContentResultListener) request.getResultListener()).onResult(result);
                 }
             } else if (captureImageUri != null) {
-                ((OnCaptureResultListener) request.getResultListener()).onCaptureResult(captureImageUri);
+                ((OnCaptureResultListener) request.getResultListener()).onResult(captureImageUri);
+                captureImageUri = null;
             } else {
-                ((OnCaptureResultListener) request.getResultListener()).onCaptureResult(data.getData());
+                ((OnCaptureResultListener) request.getResultListener()).onResult(data.getData());
             }
             request = null;
         }
@@ -205,15 +208,15 @@ public final class ContentPicker {
     @Nullable
     private static File createTempFile(@NonNull Context context) {
         try {
-            File parent = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.contentpicker_parent));
-            boolean parentCreationResult = parent.mkdirs();
-            Log.d(ContentPicker.class.getSimpleName(), parentCreationResult ? "parent folder created." : "parent folder already exists.");
+            final File parent = new File(Environment.getExternalStorageDirectory(), context.getString(R.string.contentpicker_parent));
+            final boolean parentCreationResult = parent.mkdirs();
+            Log.d(TAG + " [1/3]", parentCreationResult ? "parent folder created." : "parent folder already exists.");
 
-            File file = new File(parent, context.getString(R.string.contentpicker_child));
-            boolean fileDeletionResult = file.delete();
-            Log.d(ContentPicker.class.getSimpleName(), fileDeletionResult ? "temp file deleted." : "temp file doesn't exist.");
-            boolean fileCreationResult = file.createNewFile();
-            Log.d(ContentPicker.class.getSimpleName(), fileCreationResult ? "temp file created." : "unable to create file.");
+            final File file = new File(parent, context.getString(R.string.contentpicker_child));
+            final boolean fileDeletionResult = file.delete();
+            Log.d(TAG + " [2/3]", fileDeletionResult ? "temp file deleted." : "temp file doesn't exist.");
+            final boolean fileCreationResult = file.createNewFile();
+            Log.d(TAG + " [3/3]", fileCreationResult ? "temp file created." : "unable to create file.");
             return file;
         } catch (IOException ignored) {
             return null;
