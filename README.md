@@ -18,7 +18,7 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:contentpicker:0.2.0'
+compile 'io.github.hendraanggrian:contentpicker:0.2.1'
 ```
 
 Installation
