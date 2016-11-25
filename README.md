@@ -18,7 +18,7 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:dispatcher:0.3.0'
+compile 'io.github.hendraanggrian:dispatcher:0.3.1'
 ```
 
 Installation

@@ -72,6 +72,9 @@ public final class Dispatcher {
                 case Activity.RESULT_OK:
                     request.getResultListener().onOK(data, results);
                     break;
+                default:
+                    request.getResultListener().onUndefined(data, resultCode);
+                    break;
             }
 
             request = null;
@@ -86,6 +89,8 @@ public final class Dispatcher {
         void onFirstUser(Intent data, Result... results);
 
         void onOK(Intent data, Result... results);
+
+        void onUndefined(Intent data, int resultCode);
     }
 
     @SuppressWarnings("unchecked")
@@ -101,6 +106,10 @@ public final class Dispatcher {
 
         @Override
         public void onOK(Intent data, Result... results) {
+        }
+
+        @Override
+        public void onUndefined(Intent data, int resultCode) {
         }
     }
 }
