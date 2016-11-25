@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <lint>
-    <!-- caused by name "imagepicker_path" in contentpicker_resource-->
-    <!-- While it is not used, it is required to put any name with this path -->
+    <!-- caused by res/xml/dispatcher_resource.xml -->
     <issue id="UnusedResources" severity="ignore"/>
 </lint>

@@ -1,14 +1,14 @@
-Android ContentPicker
-=====================
+TO BE UPDATED
+=============
 
 Taking picture from camera can be a lot of hard work for such a simple task thanks to `FileProvider` in newer Android version.
 This library is specifically created to do the hard work and keeps it easy on lazy developers like me.
 In addition, it also picks single or multiple images from gallery.
 
 ```gradle
-ContentPicker.dispatchCaptureImage(MainActivity.this, new ContentPicker.OnContentResultListener() {
+Dispatcher.startActivityForResult(activity, intent, new Dispatcher.OnResultListener<Uri>() {
     @Override
-    public void onResult(@NonNull Uri uri) {
+    public void onOK(Intent data, Uri... results) {
         // do what you want with uri
     }
 });
@@ -18,7 +18,7 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:contentpicker:0.2.1'
+compile 'io.github.hendraanggrian:dispatcher:0.3.0'
 ```
 
 Installation

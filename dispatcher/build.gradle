@@ -12,7 +12,7 @@ ext {
     BINTRAY_GROUP_ID = 'io.github.hendraanggrian'
     BINTRAY_ARTIFACT_ID = 'dispatcher'
     BINTRAY_PUBLISH_VERSION = '0.3.0'
-    BINTRAY_DESC = 'Start Android Activity without result code.'
+    BINTRAY_DESC = 'Direct replacement of Android startActivityForResult().'
     BINTRAY_WEBSITE = 'https://github.com/hendraanggrian/dispatcher'
 }
 

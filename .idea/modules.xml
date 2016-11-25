@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/contentpicker.iml" filepath="$PROJECT_DIR$/contentpicker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" filepath="$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" />
     </modules>
   </component>
