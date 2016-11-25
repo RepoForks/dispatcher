@@ -1,0 +1,4 @@
+<resources>
+    <string name="dispatcher_parent">Android/data/io.github.hendraanggrian.dispatcher</string>
+    <string name="dispatcher_child">temp.jpg</string>
+</resources>

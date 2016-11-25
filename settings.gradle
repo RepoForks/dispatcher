@@ -1,1 +1,1 @@
-include ':contentpicker', ':contentpicker-example'
+include ':dispatcher', ':dispatcher-example'

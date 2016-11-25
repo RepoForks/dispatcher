@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/contentpicker.iml" filepath="$PROJECT_DIR$/contentpicker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/contentpicker/contentpicker-contentpicker.iml" filepath="$PROJECT_DIR$/contentpicker/contentpicker-contentpicker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/contentpicker-example/contentpicker-example.iml" filepath="$PROJECT_DIR$/contentpicker-example/contentpicker-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" filepath="$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" />
     </modules>
   </component>
 </project>
