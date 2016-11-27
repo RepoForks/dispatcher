@@ -28,15 +28,14 @@ public class GetContentIntent extends Intent {
     }
 
     public static Uri[] extract(@NonNull Intent data) {
-        final Uri[] results;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN && data.getClipData() != null) {
             final ClipData clipData = data.getClipData();
-            results = new Uri[clipData.getItemCount()];
+            final Uri[] results = new Uri[clipData.getItemCount()];
             for (int i = 0; i < clipData.getItemCount(); i++)
                 results[i] = clipData.getItemAt(i).getUri();
+            return results;
         } else {
-            results = new Uri[]{data.getData()};
+            return new Uri[]{data.getData()};
         }
-        return results;
     }
 }
