@@ -11,21 +11,19 @@ import java.util.Random;
  *
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-final class DispatcherRequest<Result> {
+final class DispatcherRequest {
 
     private static final int REQUEST_CODE_MAX_VALUE = 255;
 
     @Nullable private static Random random;
 
     @NonNull private final Integer requestCode;
-    @NonNull private final Intent initialIntent;
-    @NonNull private final Dispatcher.OnResultListener<Result> listener;
+    @NonNull private final Dispatcher.OnResultListener listener;
 
-    DispatcherRequest(@NonNull Intent initialIntent, @NonNull Dispatcher.OnResultListener<Result> listener) {
+    DispatcherRequest(@NonNull Dispatcher.OnResultListener listener) {
         if (random == null)
             random = new Random();
         this.requestCode = random.nextInt(REQUEST_CODE_MAX_VALUE);
-        this.initialIntent = initialIntent;
         this.listener = listener;
     }
 
@@ -34,12 +32,7 @@ final class DispatcherRequest<Result> {
     }
 
     @NonNull
-    final Intent getInitialIntent() {
-        return initialIntent;
-    }
-
-    @NonNull
-    final Dispatcher.OnResultListener<Result> getResultListener() {
+    final Dispatcher.OnResultListener getResultListener() {
         return listener;
     }
 }

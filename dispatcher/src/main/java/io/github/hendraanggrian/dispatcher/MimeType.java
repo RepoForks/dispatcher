@@ -57,6 +57,5 @@ public final class MimeType {
     public static final String ZIP = "application/zip";
 
     private MimeType() {
-
     }
 }

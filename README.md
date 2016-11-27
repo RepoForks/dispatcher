@@ -5,11 +5,13 @@ Taking picture from camera can be a lot of hard work for such a simple task than
 This library is specifically created to do the hard work and keeps it easy on lazy developers like me.
 In addition, it also picks single or multiple images from gallery.
 
-```gradle
-Dispatcher.startActivityForResult(activity, intent, new Dispatcher.OnResultListener<Uri>() {
+Direct replacement of Android `startActivityForResult()`.
+
+```java
+Dispatcher.startActivityForResult(activity, intent, new Dispatcher.SimpleOnResultListener() {
     @Override
-    public void onOK(Intent data, Uri... results) {
-        // do what you want with uri
+    public void onOK(Intent data) {
+        // do something
     }
 });
 ```
@@ -19,6 +21,43 @@ Download
 
 ```gradle
 compile 'io.github.hendraanggrian:dispatcher:0.3.1'
+```
+
+Usage
+-----
+
+```java
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        
+        Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(MimeType.IMAGE_ALL), new Dispatcher.OnResultListener() {
+            @Override
+            public void onCanceled(Intent data) {
+                // do something
+            }
+            
+            @Override
+            public void onOK(Intent data) {
+                // do something
+            }
+            
+            @Override
+            public void onUndefined(Intent data, int resultCode) {
+                // do something
+            }         
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Dispatcher.onActivityResult(requestCode, resultCode, data);
+    }
+}
 ```
 
 Installation
@@ -38,7 +77,7 @@ In your `AndroidManifest.xml`, list certain permissions and include `FileProvide
         android:grantUriPermissions="true">
         <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/contentpicker_resource"/>
+            android:resource="@xml/dispatcher_resource"/>
     </provider>
 </application>
 ```

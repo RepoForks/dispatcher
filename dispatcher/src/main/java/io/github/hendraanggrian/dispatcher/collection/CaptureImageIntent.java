@@ -19,9 +19,9 @@ import static io.github.hendraanggrian.dispatcher.Dispatcher.TAG;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public final class CaptureImageIntent extends Intent {
+public class CaptureImageIntent extends Intent {
 
-    private Uri result;
+    private static Uri result;
 
     public CaptureImageIntent(@NonNull Context context) {
         super(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -34,7 +34,7 @@ public final class CaptureImageIntent extends Intent {
         }
     }
 
-    public Uri getResult() {
+    public static Uri getResult() {
         return result;
     }
 

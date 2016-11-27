@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
                 Permission.request(MainActivity.this, new Permission.OnResultListener() {
                     @Override
                     public void onGranted(boolean alreadyGranted) throws SecurityException {
-                        Dispatcher.startActivityForResult(MainActivity.this, new CaptureImageIntent(MainActivity.this), new Dispatcher.SimpleOnResultListener<Uri>() {
+                        Dispatcher.startActivityForResult(MainActivity.this, new CaptureImageIntent(MainActivity.this), new Dispatcher.SimpleOnResultListener() {
                             @Override
-                            public void onOK(Intent data, Uri... results) {
+                            public void onOK(Intent data) {
                                 imageViewResult.setImageBitmap(null);
-                                imageViewResult.setImageURI(results[0]);
+                                imageViewResult.setImageURI(CaptureImageIntent.getResult());
                             }
                         });
                     }
@@ -59,9 +59,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_gallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(MimeType.IMAGE_ALL), new Dispatcher.SimpleOnResultListener<Uri>() {
+                Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(MimeType.IMAGE_ALL), new Dispatcher.SimpleOnResultListener() {
                     @Override
-                    public void onOK(Intent data, Uri... results) {
+                    public void onOK(Intent data) {
+                        Uri[] results = GetContentIntent.extract(data);
                         imageViewResult.setImageURI(results[0]);
                     }
                 });
@@ -71,9 +72,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_gallery_multiple).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(true, MimeType.IMAGE_ALL), new Dispatcher.SimpleOnResultListener<Uri>() {
+                Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(true, MimeType.IMAGE_ALL), new Dispatcher.SimpleOnResultListener() {
                     @Override
-                    public void onOK(Intent data, Uri... results) {
+                    public void onOK(Intent data) {
+                        Uri[] results = GetContentIntent.extract(data);
                         Toast.makeText(MainActivity.this, results.length + " images selected, last one used", Toast.LENGTH_SHORT).show();
                         imageViewResult.setImageURI(results[results.length - 1]);
                     }
