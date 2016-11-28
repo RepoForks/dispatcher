@@ -1,6 +1,8 @@
 Android Dispatcher
 ==================
 
+![logo](/art.png)
+
 Direct replacement of Android `startActivityForResult()`.
 
 ```java
@@ -29,18 +31,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(MimeType.IMAGE_ALL), new Dispatcher.OnResultListener() {
             @Override
             public void onCanceled(Intent data) {
                 // do something
             }
-            
+
             @Override
             public void onOK(Intent data) {
                 // do something
             }
-            
+
             @Override
             public void onUndefined(Intent data, int resultCode) {
                 // do something
