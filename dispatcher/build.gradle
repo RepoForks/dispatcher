@@ -3,7 +3,7 @@ apply plugin: 'com.novoda.bintray-release'
 
 ext {
     ANDROID_BUILD_TOOLS = '25'
-    ANDROID_SDK_MIN = 9
+    ANDROID_SDK_MIN = 11
     ANDROID_SDK_TARGET = 25
 
     SUPPORT_LIBRARY_VERSION = '25.0.1'
@@ -11,7 +11,7 @@ ext {
     BINTRAY_USER_ORG = 'hendraanggrian'
     BINTRAY_GROUP_ID = 'io.github.hendraanggrian'
     BINTRAY_ARTIFACT_ID = 'dispatcher'
-    BINTRAY_PUBLISH_VERSION = '0.3.2'
+    BINTRAY_PUBLISH_VERSION = '0.4.1'
     BINTRAY_DESC = 'Direct replacement of Android startActivityForResult().'
     BINTRAY_WEBSITE = 'https://github.com/hendraanggrian/dispatcher'
 }

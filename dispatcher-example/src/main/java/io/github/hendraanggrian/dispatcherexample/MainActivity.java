@@ -18,7 +18,7 @@ import io.github.hendraanggrian.dispatcher.collection.CaptureImageIntent;
 import io.github.hendraanggrian.dispatcher.collection.GetContentIntent;
 import io.github.hendraanggrian.permission.Permission;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imageViewResult;
 
@@ -28,19 +28,25 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imageViewResult = (ImageView) findViewById(R.id.imageview_result);
 
-        findViewById(R.id.button_camera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        findViewById(R.id.button_camera).setOnClickListener(this);
+        findViewById(R.id.button_gallery).setOnClickListener(this);
+        findViewById(R.id.button_gallery_multiple).setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_camera:
                 Permission.request(MainActivity.this, new Permission.OnResultListener() {
                     @Override
                     public void onGranted(boolean alreadyGranted) throws SecurityException {
-                        Dispatcher.startActivityForResult(MainActivity.this, new CaptureImageIntent(MainActivity.this), new Dispatcher.SimpleOnResultListener() {
-                            @Override
-                            public void onOK(Intent data) {
-                                imageViewResult.setImageBitmap(null);
-                                imageViewResult.setImageURI(CaptureImageIntent.getResult());
-                            }
-                        });
+                        new Dispatcher.Builder(MainActivity.this)
+                                .onOK(data -> {
+                                    imageViewResult.setImageBitmap(null);
+                                    imageViewResult.setImageURI(CaptureImageIntent.getResult());
+                                })
+                                .onCanceled(data -> Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show())
+                                .startActivityForResult(new CaptureImageIntent(MainActivity.this));
                     }
 
                     @Override
@@ -53,35 +59,24 @@ public class MainActivity extends AppCompatActivity {
                         Permission.requestAgain(MainActivity.this);
                     }
                 }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            }
-        });
-
-        findViewById(R.id.button_gallery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(MimeType.IMAGE_ALL), new Dispatcher.SimpleOnResultListener() {
-                    @Override
-                    public void onOK(Intent data) {
-                        Uri[] results = GetContentIntent.extract(data);
-                        imageViewResult.setImageURI(results[0]);
-                    }
-                });
-            }
-        });
-
-        findViewById(R.id.button_gallery_multiple).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dispatcher.startActivityForResult(MainActivity.this, new GetContentIntent(true, MimeType.IMAGE_ALL), new Dispatcher.SimpleOnResultListener() {
-                    @Override
-                    public void onOK(Intent data) {
-                        Uri[] results = GetContentIntent.extract(data);
-                        Toast.makeText(MainActivity.this, results.length + " images selected, last one used", Toast.LENGTH_SHORT).show();
-                        imageViewResult.setImageURI(results[results.length - 1]);
-                    }
-                });
-            }
-        });
+                break;
+            case R.id.button_gallery:
+                new Dispatcher.Builder(MainActivity.this)
+                        .onOK(data -> imageViewResult.setImageURI(GetContentIntent.extract(data)[0]))
+                        .onCanceled(data -> Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show())
+                        .startActivityForResult(new GetContentIntent(MimeType.IMAGE_ALL));
+                break;
+            case R.id.button_gallery_multiple:
+                new Dispatcher.Builder(MainActivity.this)
+                        .onOK(data -> {
+                            Uri[] results = GetContentIntent.extract(data);
+                            Toast.makeText(MainActivity.this, results.length + " images selected, last one used", Toast.LENGTH_SHORT).show();
+                            imageViewResult.setImageURI(results[results.length - 1]);
+                        })
+                        .onCanceled(data -> Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show())
+                        .startActivityForResult(new GetContentIntent(true, MimeType.IMAGE_ALL));
+                break;
+        }
     }
 
     @Override
