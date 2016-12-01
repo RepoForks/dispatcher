@@ -6,18 +6,15 @@ Dispatcher ![android](/art/snippet_android.png)
 Direct replacement of Android `startActivityForResult()`.
 
 ```java
-Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-
-new Dispatcher.Builder(this)
-    .onOK(data -> imageView.setImageUri(data.getData()))
-    .startActivityForResult(intent);
+Intent intent = new Intent(Intent.ACTION_GET_CONTENT).setType("image/*");
+Dispatcher.startActivityForResult(this, intent, data -> imageView.setImageURI(data.getData())));
 ```
 
 Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:dispatcher:0.4.1'
+compile 'io.github.hendraanggrian:dispatcher:0.5.0'
 ```
 
 Usage

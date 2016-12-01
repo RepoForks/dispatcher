@@ -18,22 +18,13 @@ final class DispatcherRequest {
     @Nullable private static Random random;
 
     @NonNull private final Integer requestCode;
-    @Nullable private final Dispatcher.OnResultListener canceledListener;
-    @Nullable private final Dispatcher.OnResultListener okListener;
-    @Nullable private final Dispatcher.OnAnyResultListener othersListener;
-    @Nullable private final Dispatcher.OnAnyResultListener anyListener;
+    @Nullable private final Dispatcher.OnResultListener listener;
 
-    DispatcherRequest(@Nullable Dispatcher.OnResultListener canceledListener,
-                      @Nullable Dispatcher.OnResultListener okListener,
-                      @Nullable Dispatcher.OnAnyResultListener othersListener,
-                      @Nullable Dispatcher.OnAnyResultListener anyListener) {
+    DispatcherRequest(@Nullable Dispatcher.OnResultListener listener) {
         if (random == null)
             random = new Random();
         this.requestCode = random.nextInt(REQUEST_CODE_MAX_VALUE);
-        this.canceledListener = canceledListener;
-        this.okListener = okListener;
-        this.othersListener = othersListener;
-        this.anyListener = anyListener;
+        this.listener = listener;
     }
 
     final int getRequestCode() {
@@ -41,22 +32,7 @@ final class DispatcherRequest {
     }
 
     @Nullable
-    final Dispatcher.OnResultListener getCanceledListener() {
-        return canceledListener;
-    }
-
-    @Nullable
-    final Dispatcher.OnResultListener getOKListener() {
-        return okListener;
-    }
-
-    @Nullable
-    final Dispatcher.OnAnyResultListener getOthersListener() {
-        return othersListener;
-    }
-
-    @Nullable
-    final Dispatcher.OnAnyResultListener getAnyListener() {
-        return anyListener;
+    final Dispatcher.OnResultListener getListener() {
+        return listener;
     }
 }

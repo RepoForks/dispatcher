@@ -6,11 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import java.util.List;
 
 import io.github.hendraanggrian.dispatcher.Dispatcher;
 import io.github.hendraanggrian.dispatcher.MimeType;
@@ -18,7 +15,7 @@ import io.github.hendraanggrian.dispatcher.collection.CaptureImageIntent;
 import io.github.hendraanggrian.dispatcher.collection.GetContentIntent;
 import io.github.hendraanggrian.permission.Permission;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private ImageView imageViewResult;
 
@@ -28,55 +25,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         imageViewResult = (ImageView) findViewById(R.id.imageview_result);
 
-        findViewById(R.id.button_camera).setOnClickListener(this);
-        findViewById(R.id.button_gallery).setOnClickListener(this);
-        findViewById(R.id.button_gallery_multiple).setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_camera:
-                Permission.request(MainActivity.this, new Permission.OnResultListener() {
-                    @Override
-                    public void onGranted(boolean alreadyGranted) throws SecurityException {
-                        new Dispatcher.Builder(MainActivity.this)
-                                .onOK(data -> {
+        findViewById(R.id.button_camera).setOnClickListener(view ->
+                Permission.request(this,
+                        requested ->
+                                Dispatcher.startActivityForResult(this, new CaptureImageIntent(MainActivity.this), data -> {
                                     imageViewResult.setImageBitmap(null);
                                     imageViewResult.setImageURI(CaptureImageIntent.getResult());
-                                })
-                                .onCanceled(data -> Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show())
-                                .startActivityForResult(new CaptureImageIntent(MainActivity.this));
-                    }
+                                }),
+                        map -> Toast.makeText(MainActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show(),
+                        list -> Permission.requestAgain(MainActivity.this),
+                        Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE));
 
-                    @Override
-                    public void onDenied(@NonNull List<String> permissionsGranted, @NonNull List<String> permissionsDenied) {
-                        Toast.makeText(MainActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show();
-                    }
+        findViewById(R.id.button_gallery).setOnClickListener(view ->
+                Dispatcher.startActivityForResult(this, new GetContentIntent(MimeType.IMAGE_ALL),
+                        data -> imageViewResult.setImageURI(GetContentIntent.extract(data)[0])));
 
-                    @Override
-                    public void onShouldShowRationale(@NonNull List<String> permissions) {
-                        Permission.requestAgain(MainActivity.this);
-                    }
-                }, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-                break;
-            case R.id.button_gallery:
-                new Dispatcher.Builder(MainActivity.this)
-                        .onOK(data -> imageViewResult.setImageURI(GetContentIntent.extract(data)[0]))
-                        .onCanceled(data -> Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show())
-                        .startActivityForResult(new GetContentIntent(MimeType.IMAGE_ALL));
-                break;
-            case R.id.button_gallery_multiple:
-                new Dispatcher.Builder(MainActivity.this)
-                        .onOK(data -> {
+        findViewById(R.id.button_gallery_multiple).setOnClickListener(view ->
+                Dispatcher.startActivityForResult(this, new GetContentIntent(true, MimeType.IMAGE_ALL),
+                        data -> {
                             Uri[] results = GetContentIntent.extract(data);
                             Toast.makeText(MainActivity.this, results.length + " images selected, last one used", Toast.LENGTH_SHORT).show();
                             imageViewResult.setImageURI(results[results.length - 1]);
-                        })
-                        .onCanceled(data -> Toast.makeText(MainActivity.this, "Canceled!", Toast.LENGTH_SHORT).show())
-                        .startActivityForResult(new GetContentIntent(true, MimeType.IMAGE_ALL));
-                break;
-        }
+                        }));
     }
 
     @Override

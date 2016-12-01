@@ -33,5 +33,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     compile project(':dispatcher')
-    compile 'io.github.hendraanggrian:permission:0.5.0'
+    compile 'io.github.hendraanggrian:permission:0.7.0'
 }
