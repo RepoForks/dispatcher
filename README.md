@@ -14,7 +14,7 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:dispatcher:0.5.0'
+compile 'io.github.hendraanggrian:dispatcher:0.6.0'
 ```
 
 Usage

@@ -15,7 +15,7 @@ ext {
     BINTRAY_USER_ORG = 'hendraanggrian'
     BINTRAY_GROUP_ID = 'io.github.hendraanggrian'
     BINTRAY_ARTIFACT_ID = 'dispatcher'
-    BINTRAY_PUBLISH_VERSION = '0.5.0'
+    BINTRAY_PUBLISH_VERSION = '0.6.0'
     BINTRAY_DESC = 'Direct replacement of Android startActivityForResult().'
     BINTRAY_WEBSITE = 'https://github.com/hendraanggrian/dispatcher'
 }

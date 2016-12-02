@@ -19,156 +19,164 @@ public final class Dispatcher {
     private Dispatcher() {
     }
 
-    // ACTIVITY
+    // [START] of Activity
 
     /**
      * Start an Activity for result with single callback, ignoring result code canceled and undefined.
      *
-     * @param origin     origin Activity.
-     * @param intent     Intent to start.
-     * @param okListener will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param origin origin Activity.
+     * @param dest   Intent to start.
+     * @param onOK   will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
      */
-    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent intent, @Nullable OnOKListener okListener) {
-        startActivityForResult(origin, intent, okListener, null, null);
+    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent dest, @Nullable OnOK onOK) {
+        startActivityForResult(origin, dest, onOK, null, null);
     }
 
     /**
      * Start an Activity for result with multiple callbacks, ignoring result code undefined.
      *
-     * @param origin           origin Activity.
-     * @param intent           Intent to start.
-     * @param okListener       will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
-     * @param canceledListener will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
+     * @param origin     origin Activity.
+     * @param dest       Intent to start.
+     * @param onOK       will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param onCanceled will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
      */
-    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent intent, @Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener) {
-        startActivityForResult(origin, intent, okListener, canceledListener, null);
+    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent dest, @Nullable OnOK onOK, @Nullable OnCanceled onCanceled) {
+        startActivityForResult(origin, dest, onOK, onCanceled, null);
     }
 
     /**
      * Start an Activity for result with multiple callbacks.
      *
-     * @param origin            origin Activity.
-     * @param intent            Intent to start.
-     * @param okListener        will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
-     * @param canceledListener  will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
-     * @param undefinedListener will be triggered when Activity returns result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
+     * @param origin      origin Activity.
+     * @param dest        Intent to start.
+     * @param onOK        will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param onCanceled  will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
+     * @param onUndefined will be triggered when Activity returns result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
      */
-    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent intent, @Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener, @Nullable OnUndefinedListener undefinedListener) {
-        startActivityForResult(origin, intent, combineListeners(okListener, canceledListener, undefinedListener));
+    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent dest, @Nullable OnOK onOK, @Nullable OnCanceled onCanceled, @Nullable OnUndefined onUndefined) {
+        request = new DispatcherRequest(onOK, onCanceled, onUndefined);
+        request.start(origin, dest);
     }
 
     /**
      * Start an Activity for result with single callback.
      *
      * @param origin   origin Activity.
-     * @param intent   Intent to start.
-     * @param listener single OnResultListener that must override onOK, onCancelled, and onUndefined.
+     * @param dest     Intent to start.
+     * @param callback single Callback that must override onOK, onCancelled, and onUndefined.
      */
-    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent intent, @Nullable OnResultListener listener) {
-        request = new DispatcherRequest(listener);
-        origin.startActivityForResult(intent, request.getRequestCode());
+    public static void startActivityForResult(@NonNull Activity origin, @NonNull Intent dest, @NonNull Callback callback) {
+        request = new DispatcherRequest(callback);
+        request.start(origin, dest);
     }
 
-    // FRAGMENT
+    // [END] of Activity
+
+    // [START] of Fragment
 
     /**
      * Start an Activity for result with single callback, ignoring result code canceled and undefined.
      *
-     * @param origin     origin Fragment.
-     * @param intent     Intent to start.
-     * @param okListener will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param origin origin Fragment.
+     * @param dest   Intent to start.
+     * @param onOK   will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
      */
-    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent intent, @Nullable OnOKListener okListener) {
-        startActivityForResult(origin, intent, okListener, null, null);
+    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent dest, @Nullable OnOK onOK) {
+        startActivityForResult(origin, dest, onOK, null, null);
     }
 
     /**
      * Start an Activity for result with multiple callbacks, ignoring result code undefined.
      *
-     * @param origin           origin Fragment.
-     * @param intent           Intent to start.
-     * @param okListener       will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
-     * @param canceledListener will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
+     * @param origin     origin Fragment.
+     * @param dest       Intent to start.
+     * @param onOK       will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param onCanceled will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
      */
-    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent intent, @Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener) {
-        startActivityForResult(origin, intent, okListener, canceledListener, null);
+    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent dest, @Nullable OnOK onOK, @Nullable OnCanceled onCanceled) {
+        startActivityForResult(origin, dest, onOK, onCanceled, null);
     }
 
     /**
      * Start an Activity for result with multiple callbacks.
      *
-     * @param origin            origin Fragment.
-     * @param intent            Intent to start.
-     * @param okListener        will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
-     * @param canceledListener  will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
-     * @param undefinedListener will be triggered when Activity returns result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
+     * @param origin      origin Fragment.
+     * @param dest        Intent to start.
+     * @param onOK        will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param onCanceled  will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
+     * @param onUndefined will be triggered when Activity returns result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
      */
-    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent intent, @Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener, @Nullable OnUndefinedListener undefinedListener) {
-        startActivityForResult(origin, intent, combineListeners(okListener, canceledListener, undefinedListener));
+    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent dest, @Nullable OnOK onOK, @Nullable OnCanceled onCanceled, @Nullable OnUndefined onUndefined) {
+        request = new DispatcherRequest(onOK, onCanceled, onUndefined);
+        request.start(origin, dest);
     }
 
     /**
      * Start an Activity for result with single callback.
      *
      * @param origin   origin Fragment.
-     * @param intent   Intent to start.
-     * @param listener single OnResultListener that must override onOK, onCancelled, and onUndefined.
+     * @param dest     Intent to start.
+     * @param callback single Callback that must override onOK, onCancelled, and onUndefined.
      */
-    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent intent, @Nullable OnResultListener listener) {
-        request = new DispatcherRequest(listener);
-        origin.startActivityForResult(intent, request.getRequestCode());
+    public static void startActivityForResult(@NonNull android.app.Fragment origin, @NonNull Intent dest, @NonNull Callback callback) {
+        request = new DispatcherRequest(callback);
+        request.start(origin, dest);
     }
 
-    // SUPPORT FRAGMENT
+    // [END] of Fragment
+
+    // [START] of support Fragment
 
     /**
      * Start an Activity for result with single callback, ignoring result code canceled and undefined.
      *
-     * @param origin     origin support Fragment.
-     * @param intent     Intent to start.
-     * @param okListener will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param origin origin support Fragment.
+     * @param dest   Intent to start.
+     * @param onOK   will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
      */
-    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent intent, @Nullable OnOKListener okListener) {
-        startActivityForResult(origin, intent, okListener, null, null);
+    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent dest, @Nullable OnOK onOK) {
+        startActivityForResult(origin, dest, onOK, null, null);
     }
 
     /**
      * Start an Activity for result with multiple callbacks, ignoring result code undefined.
      *
-     * @param origin           origin support Fragment.
-     * @param intent           Intent to start.
-     * @param okListener       will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
-     * @param canceledListener will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
+     * @param origin     origin support Fragment.
+     * @param dest       Intent to start.
+     * @param onOK       will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param onCanceled will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
      */
-    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent intent, @Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener) {
-        startActivityForResult(origin, intent, okListener, canceledListener, null);
+    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent dest, @Nullable OnOK onOK, @Nullable OnCanceled onCanceled) {
+        startActivityForResult(origin, dest, onOK, onCanceled, null);
     }
 
     /**
      * Start an Activity for result with multiple callbacks.
      *
-     * @param origin            origin support Fragment.
-     * @param intent            Intent to start.
-     * @param okListener        will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
-     * @param canceledListener  will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
-     * @param undefinedListener will be triggered when Activity returns result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
+     * @param origin      origin support Fragment.
+     * @param dest        Intent to start.
+     * @param onOK        will be triggered when Activity returns result code {@link Activity#RESULT_OK}.
+     * @param onCanceled  will be triggered when Activity returns result code {@link Activity#RESULT_CANCELED}.
+     * @param onUndefined will be triggered when Activity returns result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
      */
-    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent intent, @Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener, @Nullable OnUndefinedListener undefinedListener) {
-        startActivityForResult(origin, intent, combineListeners(okListener, canceledListener, undefinedListener));
+    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent dest, @Nullable OnOK onOK, @Nullable OnCanceled onCanceled, @Nullable OnUndefined onUndefined) {
+        request = new DispatcherRequest(onOK, onCanceled, onUndefined);
+        request.start(origin, dest);
     }
 
     /**
      * Start an Activity for result with single callback.
      *
      * @param origin   origin support Fragment.
-     * @param intent   Intent to start.
-     * @param listener single OnResultListener that must override onOK, onCancelled, and onUndefined.
+     * @param dest     Intent to start.
+     * @param callback single Callback that must override onOK, onCancelled, and onUndefined.
      */
-    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent intent, @Nullable OnResultListener listener) {
-        request = new DispatcherRequest(listener);
-        origin.startActivityForResult(intent, request.getRequestCode());
+    public static void startActivityForResult(@NonNull android.support.v4.app.Fragment origin, @NonNull Intent dest, @NonNull Callback callback) {
+        request = new DispatcherRequest(callback);
+        request.start(origin, dest);
     }
 
+    // [END] of support Fragment
 
     /**
      * Finish an Activity with result code and no data.
@@ -203,57 +211,37 @@ public final class Dispatcher {
     public static void onActivityResult(int requestCode, int resultCode, Intent data) {
         Observable.just(Dispatcher.request)
                 .filter(request -> request != null)
-                .filter(request -> request.getRequestCode() == requestCode)
-                .map(DispatcherRequest::getListener)
-                .filter(listener -> listener != null)
-                .subscribe(listener -> {
+                .filter(request -> request.match(requestCode))
+                .subscribe(request -> {
                     switch (resultCode) {
                         case Activity.RESULT_CANCELED:
-                            listener.onCanceled(data);
+                            request.onCanceled(data);
                             break;
                         case Activity.RESULT_OK:
-                            listener.onOK(data);
+                            request.onOK(data);
                             break;
                         default:
-                            listener.onUndefined(data, resultCode);
+                            request.onUndefined(data, resultCode);
                             break;
                     }
                 }, throwable -> {
                 }, () -> request = null);
     }
 
-    @Nullable
-    private static OnResultListener combineListeners(@Nullable OnOKListener okListener, @Nullable OnCanceledListener canceledListener, @Nullable OnUndefinedListener undefinedListener) {
-        return okListener == null && canceledListener == null && undefinedListener == null ? null : new OnResultListener() {
-            @Override
-            public void onCanceled(Intent data) {
-                if (canceledListener != null)
-                    canceledListener.onCanceled(data);
-            }
+    /**
+     * Listener that wish to be notified when the Activity receives Activity result.
+     */
+    public interface Callback extends OnOK, OnCanceled, OnUndefined {
 
-            @Override
-            public void onOK(Intent data) {
-                if (okListener != null)
-                    okListener.onOK(data);
-            }
-
-            @Override
-            public void onUndefined(Intent data, int resultCode) {
-                if (undefinedListener != null)
-                    undefinedListener.onUndefined(data, resultCode);
-            }
-        };
     }
 
     /**
      * Listener that wish to be notified when the Activity receives Activity result
      * with {@link Activity#RESULT_OK}.
      */
-    public interface OnOKListener {
+    public interface OnOK {
 
         /**
-         * Called when result code is {@link Activity#RESULT_OK}.
-         *
          * @param data intent returned from Activity that is started for result.
          */
         void onOK(Intent data);
@@ -263,11 +251,9 @@ public final class Dispatcher {
      * Listener that wish to be notified when the Activity receives Activity result
      * with {@link Activity#RESULT_CANCELED}.
      */
-    public interface OnCanceledListener {
+    public interface OnCanceled {
 
         /**
-         * Called when result code is {@link Activity#RESULT_CANCELED}.
-         *
          * @param data intent returned from Activity that is started for result.
          */
         void onCanceled(Intent data);
@@ -277,21 +263,12 @@ public final class Dispatcher {
      * Listener that wish to be notified when the Activity receives Activity result
      * with result code that is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
      */
-    public interface OnUndefinedListener {
+    public interface OnUndefined {
 
         /**
-         * Called when result code is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
-         *
          * @param data       intent returned from Activity that is started for result.
          * @param resultCode result code is not {@link Activity#RESULT_OK} and not {@link Activity#RESULT_CANCELED}.
          */
         void onUndefined(Intent data, int resultCode);
-    }
-
-    /**
-     * Listener that wish to be notified when the Activity receives Activity result.
-     */
-    public interface OnResultListener extends OnOKListener, OnCanceledListener, OnUndefinedListener {
-
     }
 }
