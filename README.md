@@ -1,4 +1,4 @@
-Dispatcher ![android](/art/snippet_android.png)
+Dispatcher
 ==========
 
 ![logo](/art/logo.png)
