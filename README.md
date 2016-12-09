@@ -1,7 +1,5 @@
-Dispatcher
-==========
-
-![logo](/art/logo.png)
+![logo](/art/logo.png) Dispatcher
+=================================
 
 Direct replacement of Android `startActivityForResult()`.
 
