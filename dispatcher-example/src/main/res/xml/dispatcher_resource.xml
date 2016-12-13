@@ -2,5 +2,5 @@
 <paths>
     <external-path
         name="dispatcher_path"
-        path="Android/data/io.github.hendraanggrian.dispatcher"/>
+        path="Android/data/io.github.hendraanggrian.dispatcherexample"/>
 </paths>

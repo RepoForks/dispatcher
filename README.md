@@ -12,34 +12,26 @@ Download
 --------
 
 ```gradle
-compile 'io.github.hendraanggrian:dispatcher:0.6.0'
+compile 'io.github.hendraanggrian:dispatcher:1.0.0'
 ```
 
 Usage
 -----
 
 ```java
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        new Dispatcher.Builder(this)
-            .onOK(new OnResultListener() {
-                @Override
-                public void onResult(Intent data) {
-                    // do something
-                }
-            })
-            .onCanceled(new OnResultListener() {
-                @Override
-                public void onResult(Intent data) {
-                    // do something
-                }
-            })
-            .startActivityForResult(new Intent(this, NextActivity.class));
+        Dispatcher.startActivityForResult(this, new Intent(this, NextActivity.class), new Dispatcher.OnOK(){
+            @Override
+            public void onOK(Intent data) {
+                // do something
+            }
+        });
     }
 
     @Override

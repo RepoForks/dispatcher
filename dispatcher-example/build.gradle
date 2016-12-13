@@ -14,7 +14,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,6 +32,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
 
+    compile 'io.github.hendraanggrian:permission:1.0.0'
+
     compile project(':dispatcher')
-    compile 'io.github.hendraanggrian:permission:0.7.0'
 }

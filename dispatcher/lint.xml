@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<lint>
-    <!-- caused by res/xml/dispatcher_resource.xml -->
-    <issue id="UnusedResources" severity="ignore"/>
-</lint>

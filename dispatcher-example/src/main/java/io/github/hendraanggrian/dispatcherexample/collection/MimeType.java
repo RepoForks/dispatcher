@@ -1,4 +1,4 @@
-package io.github.hendraanggrian.dispatcher;
+package io.github.hendraanggrian.dispatcherexample.collection;
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)

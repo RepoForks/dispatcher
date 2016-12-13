@@ -1,4 +1,4 @@
-package io.github.hendraanggrian.dispatcher.collection;
+package io.github.hendraanggrian.dispatcherexample.collection;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,9 +12,9 @@ import android.util.Log;
 import java.io.File;
 import java.io.IOException;
 
-import io.github.hendraanggrian.dispatcher.R;
+import io.github.hendraanggrian.dispatcherexample.R;
 
-import static io.github.hendraanggrian.dispatcher.Dispatcher.TAG;
+import static io.github.hendraanggrian.dispatcherexample.MainActivity.TAG;
 
 
 /**

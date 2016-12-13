@@ -1,4 +1,4 @@
-package io.github.hendraanggrian.dispatcher.collection;
+package io.github.hendraanggrian.dispatcherexample.collection;
 
 import android.content.Intent;
 import android.provider.MediaStore;

@@ -10,12 +10,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import io.github.hendraanggrian.dispatcher.Dispatcher;
-import io.github.hendraanggrian.dispatcher.MimeType;
-import io.github.hendraanggrian.dispatcher.collection.CaptureImageIntent;
-import io.github.hendraanggrian.dispatcher.collection.GetContentIntent;
+import io.github.hendraanggrian.dispatcherexample.collection.MimeType;
+import io.github.hendraanggrian.dispatcherexample.collection.CaptureImageIntent;
+import io.github.hendraanggrian.dispatcherexample.collection.GetContentIntent;
 import io.github.hendraanggrian.permission.Permission;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final String TAG = "Dispatcher";
 
     private ImageView imageViewResult;
 
@@ -33,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
                                     imageViewResult.setImageURI(CaptureImageIntent.getResult());
                                 }),
                         map -> Toast.makeText(MainActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show(),
-                        list -> Permission.requestAgain(MainActivity.this),
                         Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE));
 
         findViewById(R.id.button_gallery).setOnClickListener(view ->
