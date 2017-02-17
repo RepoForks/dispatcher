@@ -1,49 +1,37 @@
 package io.github.hendraanggrian.dispatcher;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 
+import java.lang.ref.WeakReference;
 import java.util.Random;
 
 /**
- * Represents a single request to start another Activity for result.
+ * Represents a single pendingRequest to start another Activity for result.
  * This object is kept with static modifier in {@link Dispatcher} and is released as soon as one of the callbacks is triggered.
  *
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-final class DispatcherRequest {
+abstract class DispatcherRequest<Source> {
 
-    private static final int REQUEST_CODE_MAX_VALUE = 255;
-    @Nullable private static Random random;
+    @Nullable static WeakReference<Random> RANDOM;
 
+    public abstract void dispatch();
+
+    @NonNull final SourceFactory factory;
+    @NonNull final Source source;
     final int requestCode;
-    @NonNull final Dispatcher.OnOK onOK;
-    @Nullable final Dispatcher.OnCanceled onCanceled;
-    @Nullable final Dispatcher.OnUndefined onUndefined;
 
-    DispatcherRequest(@NonNull Dispatcher.OnOK onOK, @Nullable Dispatcher.OnCanceled onCanceled, @Nullable Dispatcher.OnUndefined onUndefined) {
-        if (random == null)
-            random = new Random();
-        this.requestCode = random.nextInt(REQUEST_CODE_MAX_VALUE);
-        this.onOK = onOK;
-        this.onCanceled = onCanceled;
-        this.onUndefined = onUndefined;
+    DispatcherRequest(@NonNull SourceFactory factory, @NonNull Source source) {
+        this.factory = factory;
+        this.source = source;
+        this.requestCode = generateRandom();
     }
 
-    void start(@NonNull Activity activity, @NonNull Intent intent) {
-        activity.startActivityForResult(intent, requestCode);
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    void start(@NonNull android.app.Fragment fragment, @NonNull Intent intent) {
-        fragment.startActivityForResult(intent, requestCode);
-    }
-
-    void start(@NonNull android.support.v4.app.Fragment fragment, @NonNull Intent intent) {
-        fragment.startActivityForResult(intent, requestCode);
+    private static int generateRandom() {
+        if (RANDOM != null && RANDOM.get() != null)
+            return RANDOM.get().nextInt(255);
+        RANDOM = new WeakReference<>(new Random());
+        return generateRandom();
     }
 }
