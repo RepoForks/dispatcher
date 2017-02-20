@@ -21,19 +21,19 @@ public final class ActivityRequest<Source> extends DispatcherRequest<Source> {
     }
 
     @NonNull
-    public ActivityRequest onOK(@NonNull Dispatcher.OnActivityResult onOK) {
+    public ActivityRequest<Source> onOK(@NonNull Dispatcher.OnActivityResult onOK) {
         this.onOK = onOK;
         return this;
     }
 
     @NonNull
-    public ActivityRequest onCanceled(@NonNull Dispatcher.OnActivityResult onCanceled) {
+    public ActivityRequest<Source> onCanceled(@NonNull Dispatcher.OnActivityResult onCanceled) {
         this.onCanceled = onCanceled;
         return this;
     }
 
     @NonNull
-    public ActivityRequest onAny(@NonNull Dispatcher.OnActivityResult onAny) {
+    public ActivityRequest<Source> onAny(@NonNull Dispatcher.OnActivityResult onAny) {
         this.onAny = onAny;
         return this;
     }

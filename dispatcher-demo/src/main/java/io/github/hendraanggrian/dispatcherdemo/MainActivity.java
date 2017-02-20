@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import io.github.hendraanggrian.dispatcher.Dispatcher;
 import io.github.hendraanggrian.dispatcherdemo.collection.CaptureImageIntent;
 import io.github.hendraanggrian.dispatcherdemo.collection.GetContentIntent;
@@ -35,7 +37,14 @@ public class MainActivity extends AppCompatActivity {
                             imageViewResult.setImageURI(CaptureImageIntent.getResult());
                         })
                         .dispatch())
-                .onDenied(map -> Toast.makeText(MainActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show())
+                .onDenied(permissions -> Toast.makeText(MainActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show())
+                .onShouldShowRationale((dispatcher, permissions) -> new MaterialDialog.Builder(this)
+                        .title("Permission to camera and storage are required.")
+                        .content("Click OK to request them again.")
+                        .cancelable(false)
+                        .positiveText(android.R.string.ok)
+                        .onPositive((dialog, which) -> dispatcher.dispatch())
+                        .show())
                 .dispatch());
 
         findViewById(R.id.button_gallery).setOnClickListener(v -> Dispatcher.with(this)

@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public final class Dispatcher<Source> {
 
-    @Nullable private static DispatcherRequest PENDING_REQUEST;
+    @Nullable private static DispatcherRequest<?> PENDING_REQUEST;
 
     @NonNull private final SourceFactory factory;
     @NonNull private final Source source;
@@ -35,17 +35,17 @@ public final class Dispatcher<Source> {
     }
 
     @NonNull
-    public static Dispatcher with(@NonNull Activity activity) {
+    public static Dispatcher<Activity> with(@NonNull Activity activity) {
         return new Dispatcher<>(SourceFactory.ACTIVITY, activity);
     }
 
     @NonNull
-    public static Dispatcher with(@NonNull Fragment fragment) {
+    public static Dispatcher<Fragment> with(@NonNull Fragment fragment) {
         return new Dispatcher<>(SourceFactory.FRAGMENT, fragment);
     }
 
     @NonNull
-    public static Dispatcher with(@NonNull android.support.v4.app.Fragment fragment) {
+    public static Dispatcher<android.support.v4.app.Fragment> with(@NonNull android.support.v4.app.Fragment fragment) {
         return new Dispatcher<>(SourceFactory.SUPPORT_FRAGMENT, fragment);
     }
 
@@ -96,11 +96,11 @@ public final class Dispatcher<Source> {
     }
 
     public interface OnDenied {
-        void onDenied(@NonNull Map<String, Boolean> map);
+        void onDenied(@NonNull Map<String, Boolean> permissions);
     }
 
-    public interface OnShouldShowRationale {
-        void onShouldShowRationale(@NonNull List<String> list);
+    public interface OnShouldShowRationale<Source> {
+        void onShouldShowRationale(@NonNull DispatcherRequest<Source> dispatcher, @NonNull List<String> permissions);
     }
 
     public interface OnActivityResult {

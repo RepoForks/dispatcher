@@ -7,12 +7,13 @@ import java.lang.ref.WeakReference;
 import java.util.Random;
 
 /**
- * Represents a single pendingRequest to start another Activity for result.
+ * Represents a single request to start another Activity for result.
  * This object is kept with static modifier in {@link Dispatcher} and is released as soon as one of the callbacks is triggered.
  *
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-abstract class DispatcherRequest<Source> {
+
+public abstract class DispatcherRequest<Source> {
 
     @Nullable static WeakReference<Random> RANDOM;
 

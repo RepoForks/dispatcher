@@ -173,5 +173,5 @@ import java.lang.annotation.RetentionPolicy;
         Manifest.permission.WRITE_VOICEMAIL
 })
 @Retention(RetentionPolicy.SOURCE)
-@interface PermissionString {
+public @interface PermissionString {
 }

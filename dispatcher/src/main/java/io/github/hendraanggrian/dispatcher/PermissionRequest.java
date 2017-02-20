@@ -12,7 +12,7 @@ public final class PermissionRequest<Source> extends DispatcherRequest<Source> {
 
     @Nullable Dispatcher.OnGranted onGranted;
     @Nullable Dispatcher.OnDenied onDenied;
-    @Nullable Dispatcher.OnShouldShowRationale onShouldShowRationale;
+    @Nullable Dispatcher.OnShouldShowRationale<Source> onShouldShowRationale;
 
     PermissionRequest(@NonNull SourceFactory factory, @NonNull Source source, @NonNull @PermissionString String... permissions) {
         super(factory, source);
@@ -20,19 +20,19 @@ public final class PermissionRequest<Source> extends DispatcherRequest<Source> {
     }
 
     @NonNull
-    public PermissionRequest onGranted(@NonNull Dispatcher.OnGranted onGranted) {
+    public PermissionRequest<Source> onGranted(@NonNull Dispatcher.OnGranted onGranted) {
         this.onGranted = onGranted;
         return this;
     }
 
     @NonNull
-    public PermissionRequest onDenied(@NonNull Dispatcher.OnDenied onDenied) {
+    public PermissionRequest<Source> onDenied(@NonNull Dispatcher.OnDenied onDenied) {
         this.onDenied = onDenied;
         return this;
     }
 
     @NonNull
-    public PermissionRequest onShouldShowRationale(@NonNull Dispatcher.OnShouldShowRationale onShouldShowRationale) {
+    public PermissionRequest<Source> onShouldShowRationale(@NonNull Dispatcher.OnShouldShowRationale<Source> onShouldShowRationale) {
         this.onShouldShowRationale = onShouldShowRationale;
         return this;
     }
@@ -44,7 +44,9 @@ public final class PermissionRequest<Source> extends DispatcherRequest<Source> {
             onGranted.onGranted(false);
             Dispatcher.flushRequest();
         } else if (onShouldShowRationale != null && factory.shouldShowRationale(source, permissions)) {
-            onShouldShowRationale.onShouldShowRationale(factory.listOfShouldShowRationale(source, permissions));
+            onShouldShowRationale.onShouldShowRationale(new PermissionRequest<>(factory, source, permissions)
+                    .onGranted(onGranted)
+                    .onDenied(onDenied), factory.listOfShouldShowRationale(source, permissions));
         } else {
             factory.requestPermissions(source, permissions, requestCode);
         }
