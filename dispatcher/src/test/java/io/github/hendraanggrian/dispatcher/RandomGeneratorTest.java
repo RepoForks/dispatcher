@@ -12,7 +12,7 @@ public class RandomGeneratorTest {
     @Test
     public void initializationTest() throws Exception {
         Assert.assertNull(DispatcherRequest.RANDOM);
-        new DispatcherRequest<String>(SourceFactory.ACTIVITY, "") {
+        new DispatcherRequest(SourceFactory.ACTIVITY, "") {
             @Override
             public void dispatch() {
             }
@@ -25,7 +25,7 @@ public class RandomGeneratorTest {
     @Test
     public void stressTest() throws Exception {
         for (int i = 1; i < 10000; i++) {
-            System.out.print(new DispatcherRequest<String>(SourceFactory.ACTIVITY, "") {
+            System.out.print(new DispatcherRequest(SourceFactory.ACTIVITY, "") {
                 @Override
                 public void dispatch() {
                 }

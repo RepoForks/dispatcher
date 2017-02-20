@@ -6,33 +6,33 @@ import android.support.annotation.Nullable;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public final class PermissionRequest<Source> extends DispatcherRequest<Source> {
+public final class PermissionRequest extends DispatcherRequest {
 
     @NonNull @PermissionString private final String[] permissions;
 
     @Nullable Dispatcher.OnGranted onGranted;
     @Nullable Dispatcher.OnDenied onDenied;
-    @Nullable Dispatcher.OnShouldShowRationale<Source> onShouldShowRationale;
+    @Nullable Dispatcher.OnShouldShowRationale onShouldShowRationale;
 
-    PermissionRequest(@NonNull SourceFactory factory, @NonNull Source source, @NonNull @PermissionString String... permissions) {
+    PermissionRequest(@NonNull SourceFactory factory, @NonNull Object source, @NonNull @PermissionString String... permissions) {
         super(factory, source);
         this.permissions = permissions;
     }
 
     @NonNull
-    public PermissionRequest<Source> onGranted(@NonNull Dispatcher.OnGranted onGranted) {
+    public PermissionRequest onGranted(@NonNull Dispatcher.OnGranted onGranted) {
         this.onGranted = onGranted;
         return this;
     }
 
     @NonNull
-    public PermissionRequest<Source> onDenied(@NonNull Dispatcher.OnDenied onDenied) {
+    public PermissionRequest onDenied(@NonNull Dispatcher.OnDenied onDenied) {
         this.onDenied = onDenied;
         return this;
     }
 
     @NonNull
-    public PermissionRequest<Source> onShouldShowRationale(@NonNull Dispatcher.OnShouldShowRationale<Source> onShouldShowRationale) {
+    public PermissionRequest onShouldShowRationale(@NonNull Dispatcher.OnShouldShowRationale onShouldShowRationale) {
         this.onShouldShowRationale = onShouldShowRationale;
         return this;
     }
@@ -44,7 +44,7 @@ public final class PermissionRequest<Source> extends DispatcherRequest<Source> {
             onGranted.onGranted(false);
             Dispatcher.flushRequest();
         } else if (onShouldShowRationale != null && factory.shouldShowRationale(source, permissions)) {
-            onShouldShowRationale.onShouldShowRationale(new PermissionRequest<>(factory, source, permissions)
+            onShouldShowRationale.onShouldShowRationale(new PermissionRequest(factory, source, permissions)
                     .onGranted(onGranted)
                     .onDenied(onDenied), factory.listOfShouldShowRationale(source, permissions));
         } else {

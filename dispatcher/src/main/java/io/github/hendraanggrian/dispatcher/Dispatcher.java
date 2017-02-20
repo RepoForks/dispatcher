@@ -12,41 +12,41 @@ import java.util.Map;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public final class Dispatcher<Source> {
+public final class Dispatcher {
 
-    @Nullable private static DispatcherRequest<?> PENDING_REQUEST;
+    @Nullable private static DispatcherRequest PENDING_REQUEST;
 
     @NonNull private final SourceFactory factory;
-    @NonNull private final Source source;
+    @NonNull private final Object source;
 
-    private Dispatcher(@NonNull SourceFactory factory, @NonNull Source source) {
+    private Dispatcher(@NonNull SourceFactory factory, @NonNull Object source) {
         this.factory = factory;
         this.source = source;
     }
 
     @NonNull
-    public ActivityRequest<Source> startActivityForResult(@NonNull Intent intent) {
-        return new ActivityRequest<>(factory, source, intent);
+    public ActivityRequest startActivityForResult(@NonNull Intent intent) {
+        return new ActivityRequest(factory, source, intent);
     }
 
     @NonNull
-    public PermissionRequest<Source> requestPermissions(@NonNull @PermissionString String... permissions) {
-        return new PermissionRequest<>(factory, source, permissions);
+    public PermissionRequest requestPermissions(@NonNull @PermissionString String... permissions) {
+        return new PermissionRequest(factory, source, permissions);
     }
 
     @NonNull
-    public static Dispatcher<Activity> with(@NonNull Activity activity) {
-        return new Dispatcher<>(SourceFactory.ACTIVITY, activity);
+    public static Dispatcher with(@NonNull Activity activity) {
+        return new Dispatcher(SourceFactory.ACTIVITY, activity);
     }
 
     @NonNull
-    public static Dispatcher<Fragment> with(@NonNull Fragment fragment) {
-        return new Dispatcher<>(SourceFactory.FRAGMENT, fragment);
+    public static Dispatcher with(@NonNull Fragment fragment) {
+        return new Dispatcher(SourceFactory.FRAGMENT, fragment);
     }
 
     @NonNull
-    public static Dispatcher<android.support.v4.app.Fragment> with(@NonNull android.support.v4.app.Fragment fragment) {
-        return new Dispatcher<>(SourceFactory.SUPPORT_FRAGMENT, fragment);
+    public static Dispatcher with(@NonNull android.support.v4.app.Fragment fragment) {
+        return new Dispatcher(SourceFactory.SUPPORT_FRAGMENT, fragment);
     }
 
     public static void onRequestPermissionsResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
@@ -92,15 +92,15 @@ public final class Dispatcher<Source> {
     }
 
     public interface OnGranted {
-        void onGranted(boolean requested);
+        void onGranted(boolean requested) throws SecurityException;
     }
 
     public interface OnDenied {
         void onDenied(@NonNull Map<String, Boolean> permissions);
     }
 
-    public interface OnShouldShowRationale<Source> {
-        void onShouldShowRationale(@NonNull DispatcherRequest<Source> dispatcher, @NonNull List<String> permissions);
+    public interface OnShouldShowRationale {
+        void onShouldShowRationale(@NonNull DispatcherRequest dispatcher, @NonNull List<String> permissions);
     }
 
     public interface OnActivityResult {

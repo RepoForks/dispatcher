@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public final class ActivityRequest<Source> extends DispatcherRequest<Source> {
+public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull private final Intent destination;
 
@@ -15,25 +15,25 @@ public final class ActivityRequest<Source> extends DispatcherRequest<Source> {
     @Nullable Dispatcher.OnActivityResult onCanceled;
     @Nullable Dispatcher.OnActivityResult onAny;
 
-    ActivityRequest(@NonNull SourceFactory factory, @NonNull Source source, @NonNull Intent destination) {
+    ActivityRequest(@NonNull SourceFactory factory, @NonNull Object source, @NonNull Intent destination) {
         super(factory, source);
         this.destination = destination;
     }
 
     @NonNull
-    public ActivityRequest<Source> onOK(@NonNull Dispatcher.OnActivityResult onOK) {
+    public ActivityRequest onOK(@NonNull Dispatcher.OnActivityResult onOK) {
         this.onOK = onOK;
         return this;
     }
 
     @NonNull
-    public ActivityRequest<Source> onCanceled(@NonNull Dispatcher.OnActivityResult onCanceled) {
+    public ActivityRequest onCanceled(@NonNull Dispatcher.OnActivityResult onCanceled) {
         this.onCanceled = onCanceled;
         return this;
     }
 
     @NonNull
-    public ActivityRequest<Source> onAny(@NonNull Dispatcher.OnActivityResult onAny) {
+    public ActivityRequest onAny(@NonNull Dispatcher.OnActivityResult onAny) {
         this.onAny = onAny;
         return this;
     }

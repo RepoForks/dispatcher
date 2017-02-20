@@ -13,17 +13,17 @@ import java.util.Random;
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 
-public abstract class DispatcherRequest<Source> {
+public abstract class DispatcherRequest {
 
     @Nullable static WeakReference<Random> RANDOM;
 
     public abstract void dispatch();
 
     @NonNull final SourceFactory factory;
-    @NonNull final Source source;
+    @NonNull final Object source;
     final int requestCode;
 
-    DispatcherRequest(@NonNull SourceFactory factory, @NonNull Source source) {
+    DispatcherRequest(@NonNull SourceFactory factory, @NonNull Object source) {
         this.factory = factory;
         this.source = source;
         this.requestCode = generateRandom();
