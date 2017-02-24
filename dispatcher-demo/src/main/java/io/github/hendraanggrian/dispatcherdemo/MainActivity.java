@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         imageViewResult = (ImageView) findViewById(R.id.imageview_result);
 
+        Dispatcher.setDebug(true);
+
         findViewById(R.id.button_camera).setOnClickListener(v -> Dispatcher.with(this)
                 .requestPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .onGranted(requested -> Dispatcher.with(this)

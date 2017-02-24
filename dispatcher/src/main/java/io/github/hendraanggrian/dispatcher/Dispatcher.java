@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,9 @@ import java.util.Map;
  */
 public final class Dispatcher {
 
+    private static final String TAG = "Dispatcher";
+
+    private static boolean DEBUG;
     @Nullable private static DispatcherRequest PENDING_REQUEST;
 
     @NonNull private final SourceFactory factory;
@@ -32,6 +36,10 @@ public final class Dispatcher {
     @NonNull
     public PermissionRequest requestPermissions(@NonNull @PermissionString String... permissions) {
         return new PermissionRequest(factory, source, permissions);
+    }
+
+    public static void setDebug(boolean debug) {
+        Dispatcher.DEBUG = debug;
     }
 
     @NonNull
@@ -77,16 +85,24 @@ public final class Dispatcher {
 
     static <R extends DispatcherRequest> void queueRequest(R request) {
         PENDING_REQUEST = request;
+        if (DEBUG)
+            Log.d(TAG, "Request queued: " + PENDING_REQUEST.toString());
     }
 
     static void flushRequest() {
+        if (DEBUG && PENDING_REQUEST != null)
+            Log.d(TAG, "Request flushed: " + PENDING_REQUEST.toString());
         PENDING_REQUEST = null;
     }
 
     @SuppressWarnings("unchecked")
     private static <Request extends DispatcherRequest> void executeRequest(@NonNull Class<Request> requestClass, int requestCode, @NonNull RequestExecution<Request> requestExecution) {
         if (PENDING_REQUEST != null && requestClass.isInstance(PENDING_REQUEST) && PENDING_REQUEST.requestCode == requestCode) {
+            if (DEBUG)
+                Log.d(TAG, "catching request code: " + requestCode);
             requestExecution.execute((Request) PENDING_REQUEST);
+            if (DEBUG && PENDING_REQUEST != null)
+                Log.d(TAG, "Request executed: " + PENDING_REQUEST.toString());
             flushRequest();
         }
     }

@@ -41,8 +41,8 @@ public final class PermissionRequest extends DispatcherRequest {
     public void dispatch() {
         Dispatcher.queueRequest(this);
         if (onGranted != null && factory.isGranted(source, permissions)) {
-            onGranted.onGranted(false);
             Dispatcher.flushRequest();
+            onGranted.onGranted(false);
         } else if (onShouldShowRationale != null && factory.shouldShowRationale(source, permissions)) {
             onShouldShowRationale.onShouldShowRationale(new PermissionRequest(factory, source, permissions)
                     .onGranted(onGranted)

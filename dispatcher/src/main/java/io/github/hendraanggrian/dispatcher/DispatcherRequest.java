@@ -29,6 +29,11 @@ public abstract class DispatcherRequest {
         this.requestCode = generateRandom();
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s @%s", source.getClass().getSimpleName(), requestCode);
+    }
+
     private static int generateRandom() {
         if (RANDOM != null && RANDOM.get() != null)
             return RANDOM.get().nextInt(255);
