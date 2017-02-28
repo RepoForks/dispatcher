@@ -14,8 +14,8 @@ public final class PermissionRequest extends DispatcherRequest {
     @Nullable Dispatcher.OnDenied onDenied;
     @Nullable Dispatcher.OnShouldShowRationale onShouldShowRationale;
 
-    PermissionRequest(@NonNull SourceFactory factory, @NonNull Object source, @NonNull @PermissionString String... permissions) {
-        super(factory, source);
+    PermissionRequest(@NonNull Source source, @NonNull @PermissionString String... permissions) {
+        super(source);
         this.permissions = permissions;
     }
 
@@ -39,16 +39,18 @@ public final class PermissionRequest extends DispatcherRequest {
 
     @Override
     public void dispatch() {
-        Dispatcher.queueRequest(this);
-        if (onGranted != null && factory.isGranted(source, permissions)) {
-            Dispatcher.flushRequest();
+        if (onGranted != null && source.isPermissionsGranted(permissions)) {
             onGranted.onGranted(false);
-        } else if (onShouldShowRationale != null && factory.shouldShowRationale(source, permissions)) {
-            onShouldShowRationale.onShouldShowRationale(new PermissionRequest(factory, source, permissions)
+            return;
+        }
+
+        Dispatcher.queueRequest(this);
+        if (onShouldShowRationale != null && source.shouldShowRationale(permissions)) {
+            onShouldShowRationale.onShouldShowRationale(new PermissionRequest(source, permissions)
                     .onGranted(onGranted)
-                    .onDenied(onDenied), factory.listOfShouldShowRationale(source, permissions));
+                    .onDenied(onDenied), source.listOfShouldShowRationale(permissions));
         } else {
-            factory.requestPermissions(source, permissions, requestCode);
+            source.requestPermissions(permissions, requestCode);
         }
     }
 }

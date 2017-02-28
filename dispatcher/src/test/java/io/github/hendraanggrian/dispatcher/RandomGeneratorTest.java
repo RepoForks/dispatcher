@@ -1,5 +1,7 @@
 package io.github.hendraanggrian.dispatcher;
 
+import android.app.Activity;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -12,7 +14,7 @@ public class RandomGeneratorTest {
     @Test
     public void initializationTest() throws Exception {
         Assert.assertNull(DispatcherRequest.RANDOM);
-        new DispatcherRequest(SourceFactory.ACTIVITY, "") {
+        new DispatcherRequest(Source.valueOf(new Activity())) {
             @Override
             public void dispatch() {
             }
@@ -25,7 +27,7 @@ public class RandomGeneratorTest {
     @Test
     public void stressTest() throws Exception {
         for (int i = 1; i < 10000; i++) {
-            System.out.print(new DispatcherRequest(SourceFactory.ACTIVITY, "") {
+            System.out.print(new DispatcherRequest(Source.valueOf(new Activity())) {
                 @Override
                 public void dispatch() {
                 }

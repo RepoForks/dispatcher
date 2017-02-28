@@ -3,10 +3,12 @@ package io.github.hendraanggrian.dispatcher;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,22 +22,20 @@ public final class Dispatcher {
     private static boolean DEBUG;
     @Nullable private static DispatcherRequest PENDING_REQUEST;
 
-    @NonNull private final SourceFactory factory;
-    @NonNull private final Object source;
+    @NonNull private final Source source;
 
-    private Dispatcher(@NonNull SourceFactory factory, @NonNull Object source) {
-        this.factory = factory;
+    private Dispatcher(@NonNull Source source) {
         this.source = source;
     }
 
     @NonNull
     public ActivityRequest startActivityForResult(@NonNull Intent intent) {
-        return new ActivityRequest(factory, source, intent);
+        return new ActivityRequest(source, intent);
     }
 
     @NonNull
     public PermissionRequest requestPermissions(@NonNull @PermissionString String... permissions) {
-        return new PermissionRequest(factory, source, permissions);
+        return new PermissionRequest(source, permissions);
     }
 
     public static void setDebug(boolean debug) {
@@ -44,27 +44,37 @@ public final class Dispatcher {
 
     @NonNull
     public static Dispatcher with(@NonNull Activity activity) {
-        return new Dispatcher(SourceFactory.ACTIVITY, activity);
+        return new Dispatcher(Source.valueOf(activity));
     }
 
     @NonNull
     public static Dispatcher with(@NonNull Fragment fragment) {
-        return new Dispatcher(SourceFactory.FRAGMENT, fragment);
+        return new Dispatcher(Source.valueOf(fragment));
     }
 
     @NonNull
     public static Dispatcher with(@NonNull android.support.v4.app.Fragment fragment) {
-        return new Dispatcher(SourceFactory.SUPPORT_FRAGMENT, fragment);
+        return new Dispatcher(Source.valueOf(fragment));
     }
 
     public static void onRequestPermissionsResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
         executeRequest(PermissionRequest.class, requestCode, new RequestExecution<PermissionRequest>() {
             @Override
             public void execute(@NonNull PermissionRequest request) {
-                if (request.onGranted != null && PermissionUtil.isAllGranted(grantResults))
+                for (int result : grantResults) {
+                    if (result != PackageManager.PERMISSION_GRANTED) {
+                        if (request.onDenied != null) {
+                            Map<String, Boolean> map = new HashMap<>();
+                            for (int i = 0; i < permissions.length; i++)
+                                map.put(permissions[i], grantResults[i] == PackageManager.PERMISSION_GRANTED);
+                            request.onDenied.onDenied(map);
+                        }
+                        return;
+                    }
+                }
+
+                if (request.onGranted != null)
                     request.onGranted.onGranted(true);
-                else if (request.onDenied != null)
-                    request.onDenied.onDenied(PermissionUtil.buildMap(permissions, grantResults));
             }
         });
     }
@@ -73,26 +83,16 @@ public final class Dispatcher {
         executeRequest(ActivityRequest.class, requestCode, new RequestExecution<ActivityRequest>() {
             @Override
             public void execute(@NonNull ActivityRequest request) {
-                if (request.onAny != null)
+                if (request.onAny != null) {
                     request.onAny.onResult(requestCode, resultCode, data);
-                if (request.onOK != null && resultCode == Activity.RESULT_OK)
+                }
+                if (request.onOK != null && resultCode == Activity.RESULT_OK) {
                     request.onOK.onResult(requestCode, resultCode, data);
-                else if (request.onCanceled != null && resultCode == Activity.RESULT_CANCELED)
+                } else if (request.onCanceled != null && resultCode == Activity.RESULT_CANCELED) {
                     request.onCanceled.onResult(requestCode, resultCode, data);
+                }
             }
         });
-    }
-
-    static <R extends DispatcherRequest> void queueRequest(R request) {
-        PENDING_REQUEST = request;
-        if (DEBUG)
-            Log.d(TAG, "Request queued: " + PENDING_REQUEST.toString());
-    }
-
-    static void flushRequest() {
-        if (DEBUG && PENDING_REQUEST != null)
-            Log.d(TAG, "Request flushed: " + PENDING_REQUEST.toString());
-        PENDING_REQUEST = null;
     }
 
     @SuppressWarnings("unchecked")
@@ -103,8 +103,14 @@ public final class Dispatcher {
             requestExecution.execute((Request) PENDING_REQUEST);
             if (DEBUG && PENDING_REQUEST != null)
                 Log.d(TAG, "Request executed: " + PENDING_REQUEST.toString());
-            flushRequest();
+            PENDING_REQUEST = null;
         }
+    }
+
+    static <R extends DispatcherRequest> void queueRequest(R request) {
+        PENDING_REQUEST = request;
+        if (DEBUG)
+            Log.d(TAG, "Request queued: " + PENDING_REQUEST.toString());
     }
 
     public interface OnGranted {

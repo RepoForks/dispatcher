@@ -7,9 +7,6 @@ import java.lang.ref.WeakReference;
 import java.util.Random;
 
 /**
- * Represents a single request to start another Activity for result.
- * This object is kept with static modifier in {@link Dispatcher} and is released as soon as one of the callbacks is triggered.
- *
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 
@@ -19,12 +16,10 @@ public abstract class DispatcherRequest {
 
     public abstract void dispatch();
 
-    @NonNull final SourceFactory factory;
-    @NonNull final Object source;
+    @NonNull final Source source;
     final int requestCode;
 
-    DispatcherRequest(@NonNull SourceFactory factory, @NonNull Object source) {
-        this.factory = factory;
+    DispatcherRequest(@NonNull Source source) {
         this.source = source;
         this.requestCode = generateRandom();
     }

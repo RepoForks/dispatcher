@@ -15,8 +15,8 @@ public final class ActivityRequest extends DispatcherRequest {
     @Nullable Dispatcher.OnActivityResult onCanceled;
     @Nullable Dispatcher.OnActivityResult onAny;
 
-    ActivityRequest(@NonNull SourceFactory factory, @NonNull Object source, @NonNull Intent destination) {
-        super(factory, source);
+    ActivityRequest(@NonNull Source source, @NonNull Intent destination) {
+        super(source);
         this.destination = destination;
     }
 
@@ -41,6 +41,6 @@ public final class ActivityRequest extends DispatcherRequest {
     @Override
     public void dispatch() {
         Dispatcher.queueRequest(this);
-        factory.startActivityForResult(source, destination, requestCode);
+        source.startActivityForResult(destination, requestCode);
     }
 }
