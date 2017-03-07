@@ -9,7 +9,6 @@ import java.util.Random;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-
 public abstract class DispatcherRequest {
 
     @Nullable static WeakReference<Random> RANDOM;

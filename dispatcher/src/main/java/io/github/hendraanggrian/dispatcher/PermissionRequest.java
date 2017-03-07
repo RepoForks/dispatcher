@@ -10,9 +10,9 @@ public final class PermissionRequest extends DispatcherRequest {
 
     @NonNull @PermissionString private final String[] permissions;
 
-    @Nullable Dispatcher.OnGranted onGranted;
-    @Nullable Dispatcher.OnDenied onDenied;
-    @Nullable Dispatcher.OnShouldShowRationale onShouldShowRationale;
+    @Nullable Dispatcher.OnPermissionsGranted onGranted;
+    @Nullable Dispatcher.OnPermissionsDenied onDenied;
+    @Nullable Dispatcher.OnPermissionsShouldShowRationale onShouldShowRationale;
 
     PermissionRequest(@NonNull Source source, @NonNull @PermissionString String... permissions) {
         super(source);
@@ -20,20 +20,20 @@ public final class PermissionRequest extends DispatcherRequest {
     }
 
     @NonNull
-    public PermissionRequest onGranted(@NonNull Dispatcher.OnGranted onGranted) {
-        this.onGranted = onGranted;
+    public PermissionRequest onGranted(@NonNull Dispatcher.OnPermissionsGranted onPermissionsGranted) {
+        this.onGranted = onPermissionsGranted;
         return this;
     }
 
     @NonNull
-    public PermissionRequest onDenied(@NonNull Dispatcher.OnDenied onDenied) {
-        this.onDenied = onDenied;
+    public PermissionRequest onDenied(@NonNull Dispatcher.OnPermissionsDenied onPermissionsDenied) {
+        this.onDenied = onPermissionsDenied;
         return this;
     }
 
     @NonNull
-    public PermissionRequest onShouldShowRationale(@NonNull Dispatcher.OnShouldShowRationale onShouldShowRationale) {
-        this.onShouldShowRationale = onShouldShowRationale;
+    public PermissionRequest onShouldShowRationale(@NonNull Dispatcher.OnPermissionsShouldShowRationale onPermissionsShouldShowRationale) {
+        this.onShouldShowRationale = onPermissionsShouldShowRationale;
         return this;
     }
 

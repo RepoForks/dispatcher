@@ -18,7 +18,6 @@ import java.util.Map;
 public final class Dispatcher {
 
     private static final String TAG = "Dispatcher";
-
     private static boolean DEBUG;
     @Nullable private static DispatcherRequest PENDING_REQUEST;
 
@@ -26,6 +25,11 @@ public final class Dispatcher {
 
     private Dispatcher(@NonNull Source source) {
         this.source = source;
+    }
+
+    @NonNull
+    public ActivityRequest startActivityForResult(@NonNull Class<?> activityClass) {
+        return startActivityForResult(new Intent(source.getContext(), activityClass));
     }
 
     @NonNull
@@ -100,9 +104,12 @@ public final class Dispatcher {
         if (PENDING_REQUEST != null && requestClass.isInstance(PENDING_REQUEST) && PENDING_REQUEST.requestCode == requestCode) {
             if (DEBUG)
                 Log.d(TAG, "catching request code: " + requestCode);
+
             requestExecution.execute((Request) PENDING_REQUEST);
+
             if (DEBUG && PENDING_REQUEST != null)
                 Log.d(TAG, "Request executed: " + PENDING_REQUEST.toString());
+
             PENDING_REQUEST = null;
         }
     }
@@ -113,15 +120,15 @@ public final class Dispatcher {
             Log.d(TAG, "Request queued: " + PENDING_REQUEST.toString());
     }
 
-    public interface OnGranted {
+    public interface OnPermissionsGranted {
         void onGranted(boolean requested) throws SecurityException;
     }
 
-    public interface OnDenied {
+    public interface OnPermissionsDenied {
         void onDenied(@NonNull Map<String, Boolean> permissions);
     }
 
-    public interface OnShouldShowRationale {
+    public interface OnPermissionsShouldShowRationale {
         void onShouldShowRationale(@NonNull DispatcherRequest dispatcher, @NonNull List<String> permissions);
     }
 
