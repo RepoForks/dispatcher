@@ -1,6 +1,7 @@
 package io.github.hendraanggrian.dispatcher;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -27,8 +28,22 @@ public final class ActivityRequest extends DispatcherRequest {
 
     //region Intent methods
     @NonNull
+    public ActivityRequest setAction(String action) {
+        target.setAction(action);
+        return this;
+    }
+
+    @NonNull
+    public ActivityRequest setData(Uri data) {
+        target.setData(data);
+        return this;
+    }
+
+    @NonNull
     public ActivityRequest putExtra(String name, boolean... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -37,7 +52,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, byte... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -46,7 +63,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, char... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -55,7 +74,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, short... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -64,7 +85,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, int... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -73,7 +96,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, long... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -82,7 +107,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, float... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -91,7 +118,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, double... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -100,7 +129,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, String... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -109,7 +140,9 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, CharSequence... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
@@ -118,11 +151,12 @@ public final class ActivityRequest extends DispatcherRequest {
 
     @NonNull
     public ActivityRequest putExtra(String name, Parcelable... value) {
-        if (value.length == 1)
+        if (value == null)
+            return removeExtra(name);
+        else if (value.length == 1)
             target.putExtra(name, value[0]);
         else
             target.putExtra(name, value);
-        target.putExtra(name, value);
         return this;
     }
 
