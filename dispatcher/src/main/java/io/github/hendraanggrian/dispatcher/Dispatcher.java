@@ -23,7 +23,7 @@ public final class Dispatcher {
 
     @NonNull private final Source source;
 
-    private Dispatcher(@NonNull Source source) {
+    public Dispatcher(@NonNull Source source) {
         this.source = source;
     }
 

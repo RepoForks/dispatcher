@@ -45,7 +45,7 @@ ext.bintray = [
         user    : 'hendraanggrian',
         group   : 'io.github.hendraanggrian',
         artifact: 'dispatcher',
-        version : '2.2.2',
+        version : '2.2.3',
         desc    : 'Fluent API in Android to start activity for result and request permissions.',
         website : 'https://github.com/hendraanggrian/dispatcher'
 ]
