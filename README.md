@@ -8,7 +8,9 @@ Fluent API in Android to start activity for result and request permissions:
 Download
 --------
 ```gradle
-compile 'io.github.hendraanggrian:dispatcher:2.2.3'
+dependencies {
+    compile 'com.hendraanggrian:dispatcher:2.3.0'
+}
 ```
 
 Start activity for result

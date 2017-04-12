@@ -1,1 +1,2 @@
-include ':dispatcher', ':dispatcher-demo'
+include ':dispatcher'
+include ':dispatcher-example'

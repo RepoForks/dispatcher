@@ -1,6 +1,0 @@
-<resources>
-    <string name="app_name">Dispatcher Demo</string>
-
-    <string name="dispatcher_parent">Android/data/io.github.hendraanggrian.dispatcherdemo</string>
-    <string name="dispatcher_child">temp.jpg</string>
-</resources>

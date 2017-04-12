@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.1'
         classpath 'com.novoda:bintray-release:0.3.4'
         classpath 'me.tatarka:gradle-retrolambda:3.2.3'
     }
@@ -37,15 +37,15 @@ ext.deps = [
                 'com.android.support.test.espresso:espresso-core:2.2.2'
         ],
         main       : [
-                'com.android.support:support-fragment:25.2.0'
+                'com.android.support:support-fragment:25.3.1'
         ]
 ]
 
 ext.bintray = [
         user    : 'hendraanggrian',
-        group   : 'io.github.hendraanggrian',
+        group   : 'com.hendraanggrian',
         artifact: 'dispatcher',
-        version : '2.2.3',
+        version : '2.3.0',
         desc    : 'Fluent API in Android to start activity for result and request permissions.',
         website : 'https://github.com/hendraanggrian/dispatcher'
 ]
