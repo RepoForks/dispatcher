@@ -2,12 +2,12 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+    android:id="@+id/viewgroup"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="io.com.hendraanggrian.dispatcherdemo.com.example.dispatcherdemo.MainActivity">
+    tools:context=".MainActivity">
 
     <Button
         android:id="@+id/button_camera"

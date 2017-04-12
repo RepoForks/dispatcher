@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" filepath="$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" filepath="$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" />
     </modules>
   </component>
 </project>
