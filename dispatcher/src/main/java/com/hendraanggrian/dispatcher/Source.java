@@ -28,7 +28,7 @@ public abstract class Source {
 
     public abstract void requestPermissions(@NonNull String[] permissions, int requestCode);
 
-    private Source() {
+    Source() {
     }
 
     @NonNull

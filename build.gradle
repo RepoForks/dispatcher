@@ -55,7 +55,7 @@ ext.bintray = [
                 main       : 'dispatcher'
         ],
         version : '3.0.0',
-        desc    : 'Fluent API in Android to start activity for result and request permissions.',
+        desc    : 'Boilerplate-free permission request and start activity for result in Android.',
         website : 'https://github.com/HendraAnggrian/dispatcher'
 ]
 

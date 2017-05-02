@@ -42,9 +42,8 @@ public class MainActivity extends AppCompatActivity {
                                     imageViewResult.setImageURI(CaptureImageIntent.getResult());
                                 }),
                         (granted, denied) -> Toast.makeText(MainActivity.this, "Permission denied!", Toast.LENGTH_SHORT).show(),
-                        (dispatcher, permissions) -> Snackbar.make(viewGroup, "Permission to camera and storage are required.", Snackbar.LENGTH_INDEFINITE)
-                                .setAction("Request", v1 -> {
-                                })
+                        (permissions, dispatcher, onGranted, onDenied) -> Snackbar.make(viewGroup, "Permission to camera and storage are required.", Snackbar.LENGTH_INDEFINITE)
+                                .setAction("Request", v1 -> dispatcher.dispatch(onGranted, onDenied))
                                 .show()));
 
         findViewById(R.id.button_gallery).setOnClickListener(v -> Dispatcher.with(this)

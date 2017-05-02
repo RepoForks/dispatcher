@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public final class ActivityDispatch extends Dispatch {
+public final class ActivityDispatcher extends Dispatcher {
 
     @NonNull private final Intent target;
 
@@ -15,9 +15,14 @@ public final class ActivityDispatch extends Dispatch {
     @Nullable OnCanceled onCanceled;
     @Nullable OnAny onAny;
 
-    ActivityDispatch(@NonNull Source source, @NonNull Intent target) {
-        super(source);
+    ActivityDispatcher(@NonNull Source source, int requestCode, @NonNull Intent target) {
+        super(source, requestCode);
         this.target = target;
+    }
+
+    @Override
+    public String toString() {
+        return requestCode + " - " + target.toString();
     }
 
     public void dispatch(@Nullable OnOK onOK) {

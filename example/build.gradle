@@ -8,7 +8,7 @@ android {
         applicationId "com.example.dispatcher"
         versionCode 1
         versionName "1.0"
-        minSdkVersion 11
+        minSdkVersion config.sdk.min
         targetSdkVersion config.sdk.target
         testInstrumentationRunner config.testRunner
     }

@@ -3,12 +3,13 @@ package com.hendraanggrian.dispatcher;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public final class PermissionDispatch extends Dispatch {
+public final class PermissionDispatcher extends Dispatcher {
 
     @NonNull @PermissionString private final String[] permissions;
 
@@ -16,9 +17,14 @@ public final class PermissionDispatch extends Dispatch {
     @Nullable OnDenied onDenied;
     @Nullable OnShouldShowRationale onShouldShowRationale;
 
-    PermissionDispatch(@NonNull Source source, @NonNull @PermissionString String... permissions) {
-        super(source);
+    PermissionDispatcher(@NonNull Source source, int requestCode, @NonNull @PermissionString String... permissions) {
+        super(source, requestCode);
         this.permissions = permissions;
+    }
+
+    @Override
+    public String toString() {
+        return requestCode + " - " + Arrays.toString(permissions);
     }
 
     public void dispatch(@NonNull OnGranted onGranted) {
@@ -37,12 +43,12 @@ public final class PermissionDispatch extends Dispatch {
             onGranted.onGranted(true);
             return;
         }
-        Dispatcher.queueRequest(this);
         if (onShouldShowRationale != null && source.shouldShowRationale(permissions)) {
-            onShouldShowRationale.onShouldShowRationale(this, source.listOfShouldShowRationale(permissions));
-        } else {
-            source.requestPermissions(permissions, requestCode);
+            onShouldShowRationale.onShouldShowRationale(source.listOfShouldShowRationale(permissions), this, onGranted, onDenied);
+            return;
         }
+        Dispatcher.queueRequest(this);
+        source.requestPermissions(permissions, requestCode);
     }
 
     public interface OnGranted {
@@ -54,6 +60,6 @@ public final class PermissionDispatch extends Dispatch {
     }
 
     public interface OnShouldShowRationale {
-        void onShouldShowRationale(@NonNull PermissionDispatch dispatcher, @NonNull List<String> permissions);
+        void onShouldShowRationale(@NonNull List<String> permissions, @NonNull PermissionDispatcher dispatcher, @NonNull OnGranted onGranted, @Nullable OnDenied onDenied);
     }
 }

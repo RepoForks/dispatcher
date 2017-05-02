@@ -1,43 +1,45 @@
 package com.hendraanggrian.dispatcher;
 
-import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 /**
- * Created by hendraanggrian on 2/17/17.
+ * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 public class RandomGeneratorTest {
 
     @Test
     public void initializationTest() throws Exception {
-        Assert.assertNull(Dispatch.RANDOM);
-        new Dispatch(Source.valueOf(new Activity())) {
+        Assert.assertNull(Dispatcher.random);
+        Dispatcher.with(new Source() {
+            @NonNull
             @Override
-            public void dispatch() {
+            public Context getContext() {
+                return null;
             }
-        };
-        Assert.assertNotNull(Dispatch.RANDOM);
-        System.gc();
-        Assert.assertNull(Dispatch.RANDOM.get());
-    }
 
-    @Test
-    public void stressTest() throws Exception {
-        for (int i = 1; i < 10000; i++) {
-            System.out.print(new Dispatch(Source.valueOf(new Activity())) {
-                @Override
-                public void dispatch() {
-                }
-            }.requestCode);
-            if (i % 100 == 0) {
-                System.out.println();
-                System.gc();
-                System.out.println("garbage collected");
+            @Override
+            public boolean shouldShowRationale(@NonNull @PermissionString String... permissions) {
+                return false;
             }
-        }
-        Dispatch.RANDOM = null;
+
+            @Override
+            public void startActivityForResult(@NonNull Intent destination, int requestCode) {
+
+            }
+
+            @Override
+            public void requestPermissions(@NonNull String[] permissions, int requestCode) {
+
+            }
+        });
+        Assert.assertNotNull(Dispatcher.random);
+        System.gc();
+        Assert.assertNull(Dispatcher.random.get());
     }
 }
