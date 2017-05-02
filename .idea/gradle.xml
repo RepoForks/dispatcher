@@ -9,7 +9,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/dispatcher" />
-            <option value="$PROJECT_DIR$/dispatcher-example" />
+            <option value="$PROJECT_DIR$/dispatcher-annotations" />
+            <option value="$PROJECT_DIR$/dispatcher-compiler" />
+            <option value="$PROJECT_DIR$/example" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

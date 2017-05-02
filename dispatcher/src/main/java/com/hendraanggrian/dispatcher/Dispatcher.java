@@ -8,18 +8,17 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.util.SparseArray;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
 public final class Dispatcher {
 
-    private static final String TAG = "Dispatcher";
-    private static final SparseArray<DispatcherRequest> PENDING_REQUESTS = new SparseArray<>();
-    private static boolean DEBUG;
+    private static final String TAG = Dispatcher.class.getSimpleName();
+    private static SparseArray<Dispatch> pendingRequests;
+    private static boolean debug;
 
     @NonNull private final Source source;
 
@@ -28,22 +27,22 @@ public final class Dispatcher {
     }
 
     @NonNull
-    public ActivityRequest startActivityForResult(@NonNull Class<?> activityClass) {
+    public ActivityDispatch startActivityForResult(@NonNull Class<?> activityClass) {
         return startActivityForResult(new Intent(source.getContext(), activityClass));
     }
 
     @NonNull
-    public ActivityRequest startActivityForResult(@NonNull Intent intent) {
-        return new ActivityRequest(source, intent);
+    public ActivityDispatch startActivityForResult(@NonNull Intent intent) {
+        return new ActivityDispatch(source, intent);
     }
 
     @NonNull
-    public PermissionRequest requestPermissions(@NonNull @PermissionString String... permissions) {
-        return new PermissionRequest(source, permissions);
+    public PermissionDispatch requestPermissions(@NonNull @PermissionString String... permissions) {
+        return new PermissionDispatch(source, permissions);
     }
 
     public static void setDebug(boolean debug) {
-        Dispatcher.DEBUG = debug;
+        Dispatcher.debug = debug;
     }
 
     @NonNull
@@ -67,21 +66,24 @@ public final class Dispatcher {
     }
 
     public static void onRequestPermissionsResult(final int requestCode, final @NonNull String[] permissions, final @NonNull int[] grantResults) {
-        executeRequest(PermissionRequest.class, requestCode, new RequestExecution<PermissionRequest>() {
+        executeRequest(PermissionDispatch.class, requestCode, new RequestExecution<PermissionDispatch>() {
             @Override
-            public void execute(@NonNull PermissionRequest request) {
+            public void execute(@NonNull PermissionDispatch request) {
                 for (int result : grantResults) {
                     if (result != PackageManager.PERMISSION_GRANTED) {
                         if (request.onDenied != null) {
-                            Map<String, Boolean> map = new HashMap<>();
+                            List<String> granted = new ArrayList<>();
+                            List<String> denied = new ArrayList<>();
                             for (int i = 0; i < permissions.length; i++)
-                                map.put(permissions[i], grantResults[i] == PackageManager.PERMISSION_GRANTED);
-                            request.onDenied.onDenied(map);
+                                if (grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                                    granted.add(permissions[i]);
+                                else
+                                    denied.add(permissions[i]);
+                            request.onDenied.onDenied(granted, denied);
                         }
                         return;
                     }
                 }
-
                 if (request.onGranted != null)
                     request.onGranted.onGranted(true);
             }
@@ -89,60 +91,48 @@ public final class Dispatcher {
     }
 
     public static void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
-        executeRequest(ActivityRequest.class, requestCode, new RequestExecution<ActivityRequest>() {
+        executeRequest(ActivityDispatch.class, requestCode, new RequestExecution<ActivityDispatch>() {
             @Override
-            public void execute(@NonNull ActivityRequest request) {
+            public void execute(@NonNull ActivityDispatch request) {
                 if (request.onAny != null) {
-                    request.onAny.onResult(requestCode, resultCode, data);
+                    request.onAny.onAny(requestCode, resultCode, data);
                 }
                 if (request.onOK != null && resultCode == Activity.RESULT_OK) {
-                    request.onOK.onResult(requestCode, resultCode, data);
+                    request.onOK.onOK(data);
                 } else if (request.onCanceled != null && resultCode == Activity.RESULT_CANCELED) {
-                    request.onCanceled.onResult(requestCode, resultCode, data);
+                    request.onCanceled.onCanceled(data);
                 }
             }
         });
     }
 
     @SuppressWarnings("unchecked")
-    private static <Request extends DispatcherRequest> void executeRequest(@NonNull Class<Request> requestClass, int requestCode, @NonNull RequestExecution<Request> requestExecution) {
-        DispatcherRequest request = PENDING_REQUESTS.get(requestCode);
-        if (requestClass.isInstance(request)) {
-            if (DEBUG)
-                Log.d(TAG, "catching request code: " + requestCode);
-
-            requestExecution.execute((Request) request);
-
-            if (DEBUG)
-                Log.d(TAG, "Request executed: " + request.toString());
-
-            PENDING_REQUESTS.delete(requestCode);
+    private static <R extends Dispatch> void executeRequest(@NonNull Class<R> requestClass, int requestCode, @NonNull RequestExecution<R> requestExecution) {
+        if (pendingRequests == null)
+            return;
+        Dispatch dispatch = pendingRequests.get(requestCode);
+        if (dispatch == null) {
+            if (debug)
+                Log.d(TAG, "MISS: request code " + requestCode + " was not created by Dispatcher");
+            return;
+        }
+        if (requestClass.isInstance(dispatch)) {
+            if (debug)
+                Log.d(TAG, "HIT: " + dispatch.toString());
+            requestExecution.execute((R) dispatch);
+            pendingRequests.delete(requestCode);
         }
     }
 
-    static void queueRequest(DispatcherRequest request) {
-        PENDING_REQUESTS.append(request.requestCode, request);
-        if (DEBUG)
-            Log.d(TAG, "Request queued: " + request.toString());
+    static void queueRequest(Dispatch dispatch) {
+        if (pendingRequests == null)
+            pendingRequests = new SparseArray<>();
+        pendingRequests.append(dispatch.requestCode, dispatch);
+        if (debug)
+            Log.d(TAG, "MARKED: " + dispatch.toString());
     }
 
-    public interface OnPermissionsGranted {
-        void onGranted(boolean requested) throws SecurityException;
-    }
-
-    public interface OnPermissionsDenied {
-        void onDenied(@NonNull Map<String, Boolean> permissions);
-    }
-
-    public interface OnPermissionsShouldShowRationale {
-        void onShouldShowRationale(@NonNull DispatcherRequest dispatcher, @NonNull List<String> permissions);
-    }
-
-    public interface OnActivityResult {
-        void onResult(int requestCode, int resultCode, Intent data);
-    }
-
-    private interface RequestExecution<Request extends DispatcherRequest> {
-        void execute(@NonNull Request request);
+    private interface RequestExecution<R extends Dispatch> {
+        void execute(@NonNull R request);
     }
 }

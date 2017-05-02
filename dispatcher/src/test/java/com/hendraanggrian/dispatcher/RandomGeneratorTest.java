@@ -13,21 +13,21 @@ public class RandomGeneratorTest {
 
     @Test
     public void initializationTest() throws Exception {
-        Assert.assertNull(DispatcherRequest.RANDOM);
-        new DispatcherRequest(Source.valueOf(new Activity())) {
+        Assert.assertNull(Dispatch.RANDOM);
+        new Dispatch(Source.valueOf(new Activity())) {
             @Override
             public void dispatch() {
             }
         };
-        Assert.assertNotNull(DispatcherRequest.RANDOM);
+        Assert.assertNotNull(Dispatch.RANDOM);
         System.gc();
-        Assert.assertNull(DispatcherRequest.RANDOM.get());
+        Assert.assertNull(Dispatch.RANDOM.get());
     }
 
     @Test
     public void stressTest() throws Exception {
         for (int i = 1; i < 10000; i++) {
-            System.out.print(new DispatcherRequest(Source.valueOf(new Activity())) {
+            System.out.print(new Dispatch(Source.valueOf(new Activity())) {
                 @Override
                 public void dispatch() {
                 }
@@ -38,6 +38,6 @@ public class RandomGeneratorTest {
                 System.out.println("garbage collected");
             }
         }
-        DispatcherRequest.RANDOM = null;
+        Dispatch.RANDOM = null;
     }
 }

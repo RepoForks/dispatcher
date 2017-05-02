@@ -9,16 +9,14 @@ import java.util.Random;
 /**
  * @author Hendra Anggrian (hendraanggrian@gmail.com)
  */
-public abstract class DispatcherRequest {
+abstract class Dispatch {
 
     @Nullable static WeakReference<Random> RANDOM;
-
-    public abstract void dispatch();
 
     @NonNull final Source source;
     final int requestCode;
 
-    DispatcherRequest(@NonNull Source source) {
+    Dispatch(@NonNull Source source) {
         this.source = source;
         this.requestCode = generateRandom();
     }

@@ -1,5 +1,5 @@
-![logo](/art/logo.png) Dispatcher
-=================================
+Dispatcher
+==========
 Fluent API in Android to start activity for result and request permissions:
  * Eliminate request codes when starting new Activity and requesting permissions.
  * Put the logic of the result in listeners instead of in `onActivityResult` or `onRequestPermissionsResult`.
@@ -9,13 +9,14 @@ Download
 --------
 ```gradle
 dependencies {
-    compile 'com.hendraanggrian:dispatcher:2.3.0'
+    compile 'com.hendraanggrian:dispatcher:3.0.0'
 }
 ```
 
 Start activity for result
 -------------------------
 ```java
+@Dispatchable
 public class MainActivity extends Activity {
 
     @Override
@@ -23,18 +24,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Dispatcher.with(activity)
+        Dispatcher.with(this)
             .startActivityForResult(new Intent(context, NextActivity.class))
-            .onOK((requestCode, resultCode, data) -> {
+            .dispatch((requestCode, resultCode, data) -> {
                 // do something
-            })
-            .dispatch();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Dispatcher.onActivityResult(requestCode, resultCode, data);
+            });
     }
 }
 ```
@@ -42,6 +36,7 @@ public class MainActivity extends Activity {
 Request permissions
 -------------------
 ```java
+@Dispatchable
 public class MainActivity extends Activity {
 
     @Override
@@ -49,18 +44,13 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Dispatcher.with(activity)
+        Dispatcher.with(this)
             .requestPermissions(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            .onGranted(requested -> {
-                // do something
-            })
-            .dispatch();
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Dispatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            .dispatch(alreadyGranted -> {
+                // granted
+            }, (granted, denied) -> {
+                // denied
+            });
     }
 }
 ```

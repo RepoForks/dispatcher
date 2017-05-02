@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion config.sdk.target
+    buildToolsVersion config.buildTools
     defaultConfig {
         applicationId "com.example.dispatcher"
-        minSdkVersion 11
-        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        minSdkVersion 11
+        targetSdkVersion config.sdk.target
+        testInstrumentationRunner config.testRunner
     }
     buildTypes {
         release {
@@ -25,13 +25,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    testCompile deps.junit
+    androidTestCompile(deps.testRunner) {
         exclude group: 'com.android.support', module: 'support-annotations'
-    })
+    }
+    androidTestCompile(deps.testEspresso) {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    testCompile 'junit:junit:4.12'
 
     compile project(':dispatcher')
+    annotationProcessor project(':dispatcher-compiler')
 }
