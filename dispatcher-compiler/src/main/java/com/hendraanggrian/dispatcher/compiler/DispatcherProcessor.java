@@ -58,6 +58,6 @@ public final class DispatcherProcessor extends AbstractProcessor {
             TreePath path = trees.getPath(element);
             scanner.scan(path, path.getCompilationUnit());
         }
-        return true;
+        return false;
     }
 }

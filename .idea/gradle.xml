@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/dispatcher-annotations" />
             <option value="$PROJECT_DIR$/dispatcher-compiler" />
             <option value="$PROJECT_DIR$/example" />
+            <option value="$PROJECT_DIR$/example-library" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

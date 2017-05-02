@@ -1,2 +1,2 @@
 include ':dispatcher', ':dispatcher-annotations', ':dispatcher-compiler'
-include ':example'
+include ':example', ':example-library'

@@ -9,7 +9,8 @@ Download
 --------
 ```gradle
 dependencies {
-    compile 'com.hendraanggrian:dispatcher:3.0.0'
+    compile 'com.hendraanggrian:dispatcher:3.0.3'
+    annotationProcessor 'com.hendraanggrian:dispatcher-compiler:3.0.3'
 }
 ```
 

@@ -3,19 +3,13 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher-annotations/dispatcher-annotations.iml" filepath="$PROJECT_DIR$/dispatcher-annotations/dispatcher-annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher-annotations/dispatcher-annotations.iml" filepath="$PROJECT_DIR$/dispatcher-annotations/dispatcher-annotations.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher-compiler/dispatcher-compiler.iml" filepath="$PROJECT_DIR$/dispatcher-compiler/dispatcher-compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher-compiler/dispatcher-compiler.iml" filepath="$PROJECT_DIR$/dispatcher-compiler/dispatcher-compiler.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" filepath="$PROJECT_DIR$/dispatcher/dispatcher-dispatcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" filepath="$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" filepath="$PROJECT_DIR$/dispatcher-example/dispatcher-example.iml" />
       <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
-      <module fileurl="file://$PROJECT_DIR$/example/example.iml" filepath="$PROJECT_DIR$/example/example.iml" />
+      <module fileurl="file://$PROJECT_DIR$/example-library/example-library.iml" filepath="$PROJECT_DIR$/example-library/example-library.iml" />
     </modules>
   </component>
 </project>

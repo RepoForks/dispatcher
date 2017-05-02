@@ -54,7 +54,7 @@ ext.bintray = [
                 compiler   : 'dispatcher-compiler',
                 main       : 'dispatcher'
         ],
-        version : '3.0.0',
+        version : '3.0.3',
         desc    : 'Boilerplate-free permission request and start activity for result in Android.',
         website : 'https://github.com/HendraAnggrian/dispatcher'
 ]

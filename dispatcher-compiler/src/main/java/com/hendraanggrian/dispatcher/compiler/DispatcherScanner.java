@@ -37,51 +37,8 @@ final class DispatcherScanner extends TreePathScanner<Object, CompilationUnitTre
             // Only process on files which have been compiled from source
             if (compilationUnit.sourcefile.getKind() == JavaFileObject.Kind.SOURCE) {
                 compilationUnit.accept(new TreeTranslator() {
-                    boolean hasOnActivityResult;
-                    boolean hasOnRequestPermissionResult;
-
-                    @Override
-                    public void visitClassDef(JCTree.JCClassDecl tree) {
-                        super.visitClassDef(tree);
-                        if (!hasOnActivityResult) {
-                            tree.defs = tree.defs.append(maker.MethodDef(
-                                    maker.Modifiers(Flags.PROTECTED),
-                                    utils.getName("onActivityResult"),
-                                    maker.Type(new Type.JCVoidType()),
-                                    List.<JCTree.JCTypeParameter>nil(),
-                                    List.of(
-                                            createMethodParam("requestCode", maker.TypeIdent(TypeTag.INT)),
-                                            createMethodParam("resultCode", maker.TypeIdent(TypeTag.INT)),
-                                            createMethodParam("data", maker.Select(maker.Ident(utils.getName("android.content")), utils.getName("Intent")))
-                                    ),
-                                    List.<JCTree.JCExpression>nil(),
-                                    maker.Block(0, List.<JCTree.JCStatement>of(
-                                            createMethodCall(null, "super", "onActivityResult", "requestCode", "resultCode", "data"),
-                                            createMethodCall("com.hendraanggrian.dispatcher", "Dispatcher", "onActivityResult", "requestCode", "resultCode", "data")
-                                    )),
-                                    null)
-                            );
-                        }
-                        if (!hasOnRequestPermissionResult) {
-                            tree.defs = tree.defs.append(maker.MethodDef(
-                                    maker.Modifiers(Flags.PUBLIC),
-                                    utils.getName("onRequestPermissionsResult"),
-                                    maker.Type(new Type.JCVoidType()),
-                                    List.<JCTree.JCTypeParameter>nil(),
-                                    List.of(
-                                            createMethodParam("requestCode", maker.TypeIdent(TypeTag.INT)),
-                                            createMethodParam("permissions", maker.TypeArray(maker.Ident(utils.getName("String")))),
-                                            createMethodParam("grantResults", maker.TypeArray(maker.TypeIdent(TypeTag.INT)))
-                                    ),
-                                    List.<JCTree.JCExpression>nil(),
-                                    maker.Block(0, List.<JCTree.JCStatement>of(
-                                            createMethodCall(null, "super", "onRequestPermissionsResult", "requestCode", "permissions", "grantResults"),
-                                            createMethodCall("com.hendraanggrian.dispatcher", "Dispatcher", "onRequestPermissionsResult", "requestCode", "permissions", "grantResults")
-                                    )),
-                                    null)
-                            );
-                        }
-                    }
+                    private boolean hasOnActivityResult = false;
+                    private boolean hasOnRequestPermissionResult = false;
 
                     @Override
                     public void visitMethodDef(JCTree.JCMethodDecl tree) {
@@ -97,10 +54,59 @@ final class DispatcherScanner extends TreePathScanner<Object, CompilationUnitTre
                             }
                             boolean hasDispatcher = false;
                             for (JCTree.JCStatement stat : tree.body.stats)
-                                if (stat.toString().startsWith("Dispatcher." + tree.name.toString()))
+                                if (stat.toString().contains("Dispatcher." + tree.name.toString()))
                                     hasDispatcher = true;
                             if (!hasDispatcher)
                                 tree.body.stats = tree.body.stats.append(createMethodCall("com.hendraanggrian.dispatcher", "Dispatcher", tree.name.toString(), tree.params));
+                        }
+                    }
+
+                    @Override
+                    public void visitClassDef(JCTree.JCClassDecl tree) {
+                        super.visitClassDef(tree);
+                        String methodName;
+                        String[] params;
+                        if (!hasOnActivityResult) {
+                            methodName = "onActivityResult";
+                            params = new String[]{"requestCode", "resultCode", "data"};
+                            tree.defs = tree.defs.append(maker.MethodDef(
+                                    maker.Modifiers(Flags.PUBLIC),
+                                    utils.getName(methodName),
+                                    maker.Type(new Type.JCVoidType()),
+                                    List.<JCTree.JCTypeParameter>nil(),
+                                    List.of(
+                                            createMethodParam(params[0], maker.TypeIdent(TypeTag.INT)),
+                                            createMethodParam(params[1], maker.TypeIdent(TypeTag.INT)),
+                                            createMethodParam(params[2], maker.Select(maker.Ident(utils.getName("android.content")), utils.getName("Intent")))
+                                    ),
+                                    List.<JCTree.JCExpression>nil(),
+                                    maker.Block(0, List.<JCTree.JCStatement>of(
+                                            createMethodCall(null, "super", methodName, params),
+                                            createMethodCall("com.hendraanggrian.dispatcher", "Dispatcher", methodName, params)
+                                    )),
+                                    null
+                            ));
+                        }
+                        if (!hasOnRequestPermissionResult) {
+                            methodName = "onRequestPermissionsResult";
+                            params = new String[]{"requestCode", "permissions", "grantResults"};
+                            tree.defs = tree.defs.append(maker.MethodDef(
+                                    maker.Modifiers(Flags.PUBLIC),
+                                    utils.getName(methodName),
+                                    maker.Type(new Type.JCVoidType()),
+                                    List.<JCTree.JCTypeParameter>nil(),
+                                    List.of(
+                                            createMethodParam(params[0], maker.TypeIdent(TypeTag.INT)),
+                                            createMethodParam(params[1], maker.TypeArray(maker.Ident(utils.getName("String")))),
+                                            createMethodParam(params[2], maker.TypeArray(maker.TypeIdent(TypeTag.INT)))
+                                    ),
+                                    List.<JCTree.JCExpression>nil(),
+                                    maker.Block(0, List.<JCTree.JCStatement>of(
+                                            createMethodCall(null, "super", methodName, params),
+                                            createMethodCall("com.hendraanggrian.dispatcher", "Dispatcher", methodName, params)
+                                    )),
+                                    null
+                            ));
                         }
                     }
                 });
